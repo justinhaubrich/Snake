@@ -9,4 +9,10 @@ export const constants = {
     TILE_SIZE: 100,
     DEFAULT_GRID_SIZE: `SM_GRID_SIZE`,
     SNAKE_COLOR: '#2D2',
+    KEYS: {
+        LEFT: 37,
+        RIGHT: 39,
+        UP: 38,
+        DOWN: 40,
+    }
 }

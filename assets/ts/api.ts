@@ -120,6 +120,43 @@ class Snake {
         }
         )
     }
+    public changeDirection(event) {
+        const keyPress = event.keyCode
+        console.log(window.api, window.api.store.snake.vy, event)
+        const { KEYS } = window.api.constants
+        // determine current direction
+        const snake = window.api.store.snake
+        const goingUp = snake.vy == -1
+        const goingDown = snake.vy == 1
+        const goingLeft = snake.vx == -1
+        const goingRight = snake.vx == 1
+
+        // the snake cannot reverse direction
+        
+        // change the velocity of the snake
+        // prevent the snake from changing direction twice in a row
+        if (!snake.changingDirection) {
+            snake.changingDirection = true
+            console.log(`keypress is ${keyPress}, goingUp is ${goingUp}, goingDown is ${goingDown}, goingLeft is ${goingLeft}, goingRight is ${goingRight}`)
+            if (keyPress == KEYS.DOWN && !goingUp) {
+                snake.vx = 0
+                snake.vy = 1
+            }
+            if (keyPress == KEYS.UP && !goingDown) {
+                snake.vx = 0
+                snake.vy = -1
+            }
+            if (keyPress == KEYS.LEFT && !goingRight) {
+                snake.vx = -1
+                snake.vy = 0
+            }
+            if (keyPress == KEYS.RIGHT && !goingLeft) {
+                snake.vx = 1
+                snake.vy = 0
+            }
+
+        }
+    }
 }
 
 export const api: Api = {
@@ -131,9 +168,12 @@ export const api: Api = {
         this?.api?.setupGrid(grid)
         this?.api?.store.snake = new Snake(grid, constants, api)
         this?.api?.store.food = new Food(api)
+        console.log(this.api)
+        document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
     },
-    mainLoop: () => {
+    mainLoop: (api) => {
         console.log(`main loop`)
+        api.store.snake.changingDirection = false
     },
     setupGrid: (grid: HTMLElement) => {
         console.log(`setting up grid`)

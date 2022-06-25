@@ -112,6 +112,40 @@ var Snake = /** @class */ (function () {
             }
         });
     };
+    Snake.prototype.changeDirection = function (event) {
+        var keyPress = event.keyCode;
+        console.log(window.api, window.api.store.snake.vy, event);
+        var KEYS = window.api.constants.KEYS;
+        // determine current direction
+        var snake = window.api.store.snake;
+        var goingUp = snake.vy == -1;
+        var goingDown = snake.vy == 1;
+        var goingLeft = snake.vx == -1;
+        var goingRight = snake.vx == 1;
+        // the snake cannot reverse direction
+        // change the velocity of the snake
+        // prevent the snake from changing direction twice in a row
+        if (!snake.changingDirection) {
+            snake.changingDirection = true;
+            console.log("keypress is ".concat(keyPress, ", goingUp is ").concat(goingUp, ", goingDown is ").concat(goingDown, ", goingLeft is ").concat(goingLeft, ", goingRight is ").concat(goingRight));
+            if (keyPress == KEYS.DOWN && !goingUp) {
+                snake.vx = 0;
+                snake.vy = 1;
+            }
+            if (keyPress == KEYS.UP && !goingDown) {
+                snake.vx = 0;
+                snake.vy = -1;
+            }
+            if (keyPress == KEYS.LEFT && !goingRight) {
+                snake.vx = -1;
+                snake.vy = 0;
+            }
+            if (keyPress == KEYS.RIGHT && !goingLeft) {
+                snake.vx = 1;
+                snake.vy = 0;
+            }
+        }
+    };
     return Snake;
 }());
 exports.api = {
@@ -124,9 +158,12 @@ exports.api = {
         (_d = _this === null || _this === void 0 ? void 0 : _this.api) === null || _d === void 0 ? void 0 : _d.setupGrid(grid);
         (_e = _this === null || _this === void 0 ? void 0 : _this.api) === null || _e === void 0 ? void 0 : _e.store.snake = new Snake(grid, constants, exports.api);
         (_f = _this === null || _this === void 0 ? void 0 : _this.api) === null || _f === void 0 ? void 0 : _f.store.food = new Food(exports.api);
+        console.log(_this.api);
+        document.addEventListener("keydown", _this.api.store.snake.changeDirection);
     },
-    mainLoop: function () {
+    mainLoop: function (api) {
         console.log("main loop");
+        api.store.snake.changingDirection = false;
     },
     setupGrid: function (grid) {
         console.log("setting up grid");
