@@ -18,4 +18,6 @@ export interface Store {
     grid: HTMLElement;
     gridSize: number;
     tileSize: number;
+    interval: number;
+    gameOver: Boolean;
 }

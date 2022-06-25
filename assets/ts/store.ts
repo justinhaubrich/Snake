@@ -1,3 +1,4 @@
 export const store = {
-    score: 0
+    score: 0,
+    interval: 500,
 }

@@ -2,5 +2,6 @@
 exports.__esModule = true;
 exports.store = void 0;
 exports.store = {
-    score: 0
+    score: 0,
+    interval: 500
 };

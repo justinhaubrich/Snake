@@ -77,7 +77,14 @@ class Snake {
         const selector: string = `.tile-class[data-x="${head.x}"][data-y="${head.y}"]`
         const bodyPart = document.createElement('div')
         bodyPart.classList.add('snake-class')
+        try {
         api.store.grid.querySelector(selector).appendChild(bodyPart)
+        } catch (e) {
+            // user tried to go out of bounds
+            console.log(`collision with wall`)
+            api.store.gameOver = true
+            api.mainLoop(api)
+        }
         // check if the snake has eaten food
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
             api.store.score += 1
@@ -114,7 +121,8 @@ class Snake {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
                     console.log(`collision with self`)
-                    api.mainLoop()
+                    api.store.gameOver = true 
+                    api.mainLoop(api)
                 }
             }
         }
@@ -170,10 +178,20 @@ export const api: Api = {
         this?.api?.store.food = new Food(api)
         console.log(this.api)
         document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
+        this?.api?.mainLoop(this.api)
     },
-    mainLoop: (api) => {
-        console.log(`main loop`)
-        api.store.snake.changingDirection = false
+    mainLoop: (api: Api) => {
+        // check if game is over
+        console.log(`main loop`, api, this.api)
+        this.api.store.snake.changingDirection = false
+        if (!this.api.store.gameOver) {
+            setTimeout(() => {
+                this.api.store.snake.move(this.api)
+                this.api.mainLoop(this.api)
+            }, this.api.store.interval)
+        } else {
+            document.querySelector(`#message`).innerHTML = `Game Over`
+        }
     },
     setupGrid: (grid: HTMLElement) => {
         console.log(`setting up grid`)

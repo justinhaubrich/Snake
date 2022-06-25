@@ -70,7 +70,15 @@ var Snake = /** @class */ (function () {
         var selector = ".tile-class[data-x=\"".concat(head.x, "\"][data-y=\"").concat(head.y, "\"]");
         var bodyPart = document.createElement('div');
         bodyPart.classList.add('snake-class');
-        api.store.grid.querySelector(selector).appendChild(bodyPart);
+        try {
+            api.store.grid.querySelector(selector).appendChild(bodyPart);
+        }
+        catch (e) {
+            // user tried to go out of bounds
+            console.log("collision with wall");
+            api.store.gameOver = true;
+            api.mainLoop(api);
+        }
         // check if the snake has eaten food
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
             api.store.score += 1;
@@ -107,7 +115,8 @@ var Snake = /** @class */ (function () {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
                     console.log("collision with self");
-                    api.mainLoop();
+                    api.store.gameOver = true;
+                    api.mainLoop(api);
                 }
             }
         });
@@ -150,7 +159,7 @@ var Snake = /** @class */ (function () {
 }());
 exports.api = {
     initGame: function (grid, constants, store) {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g;
         _this.api.constants = constants;
         console.log("initiating", _this, store);
         (_a = _this === null || _this === void 0 ? void 0 : _this.api) === null || _a === void 0 ? void 0 : _a.store = store;
@@ -160,10 +169,21 @@ exports.api = {
         (_f = _this === null || _this === void 0 ? void 0 : _this.api) === null || _f === void 0 ? void 0 : _f.store.food = new Food(exports.api);
         console.log(_this.api);
         document.addEventListener("keydown", _this.api.store.snake.changeDirection);
+        (_g = _this === null || _this === void 0 ? void 0 : _this.api) === null || _g === void 0 ? void 0 : _g.mainLoop(_this.api);
     },
     mainLoop: function (api) {
-        console.log("main loop");
-        api.store.snake.changingDirection = false;
+        // check if game is over
+        console.log("main loop", api, _this.api);
+        _this.api.store.snake.changingDirection = false;
+        if (!_this.api.store.gameOver) {
+            setTimeout(function () {
+                _this.api.store.snake.move(_this.api);
+                _this.api.mainLoop(_this.api);
+            }, _this.api.store.interval);
+        }
+        else {
+            document.querySelector("#message").innerHTML = "Game Over";
+        }
     },
     setupGrid: function (grid) {
         console.log("setting up grid");
