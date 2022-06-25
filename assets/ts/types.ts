@@ -4,6 +4,9 @@ export interface Api {
     mainLoop: () => void;
     setupGrid: (grid: HTMLElement) => void;
     start: () => void;
+    restart: () => void;
+    pause: () => void;
+    setGameOver: () => void;
     constants: Object | null;
     store: Store | null;
 }
@@ -15,7 +18,7 @@ export interface Coords {
 
 export interface Store {
     snake: Snake;
-    food: { body: Coords, draw: () => void };
+    food: { body: Coords, remove: () => void, draw: () => void };
     score: number;
     grid: HTMLElement;
     gridSize: number;

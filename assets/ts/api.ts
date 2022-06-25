@@ -92,8 +92,8 @@ class Snake {
         } catch (e) {
             // user tried to go out of bounds
             console.log(`collision with wall`)
-            api.store.gameOver = true
-            api.mainLoop(api)
+            api.setGameOver(api)
+            api.mainLoop()
         }
         // check if the snake has eaten food
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
@@ -124,6 +124,7 @@ class Snake {
         // check if the snake has hit the wall
         if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
             console.log(`collision with wall`)
+            api.setGameOver(api)
             api.mainLoop()
         }
         // check if the snake has hit itself
@@ -131,7 +132,7 @@ class Snake {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
                     console.log(`collision with self`)
-                    api.store.gameOver = true 
+                    api.setGameOver(api)
                     api.mainLoop(api)
                 }
             }
@@ -189,6 +190,11 @@ export const api: Api = {
         this?.api?.store.food = new Food(api)
         console.log(this.api)
         document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
+        // get high score from local storage
+        const highScore = localStorage.getItem(`highScore`)
+        if (highScore) {
+            document.getElementById(`highscore`).innerHTML = `High Score: ${highScore}`
+        }
     },
     getBoardState: () => {
         // get the current state of the board indicating what cells are empty, occupied by the snake, occupied by a “food item”
@@ -218,9 +224,25 @@ export const api: Api = {
         }
     },
     start () { this.store.pause = false; this.mainLoop();},
+    setGameOver () { 
+        document.querySelector(`#message`).innerHTML = `Game Over`
+        console.log(`setGameOver called`, this)
+        this.store.gameOver = true;
+        // save high score to local storage if it is greater than the current high score
+        const highScore = localStorage.getItem(`highScore`)
+        if (highScore) {
+            if (this.store.score > highScore) {
+                localStorage.setItem(`highScore`, this.store.score.toString())
+            }
+        }
+        // if no high score save it to local storage
+        else {
+            localStorage.setItem(`highScore`, this.store.score.toString())
+        }
+    },
     pause () { this.store.pause = true },
     restart () {
-        this.store.gameOver = true 
+        this.setGameOver.bind(this)
         this.store.score = 3 
         this.store.snake.remove(this)
         this.store.snake = new Snake(this)
@@ -278,6 +300,10 @@ export const api: Api = {
         this.store.difficulty = difficulty
         this.store.interval = this.constants[`INTERVALS`][difficulty.toUpperCase()]
     },
+    changeDirection(direction: `UP` | `DOWN` | `LEFT` | `RIGHT`) {
+        this.store.snake.changeDirection({keyCode: this.constants.KEYS[direction]})
+    },
+
     setBoardSize (boardSize: BoardSizes): void {
         this.store.gridSize = boardSize
         // remove all tiles from the grid

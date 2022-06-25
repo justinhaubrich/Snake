@@ -87,8 +87,8 @@ var Snake = /** @class */ (function () {
         catch (e) {
             // user tried to go out of bounds
             console.log("collision with wall");
-            api.store.gameOver = true;
-            api.mainLoop(api);
+            api.setGameOver(api);
+            api.mainLoop();
         }
         // check if the snake has eaten food
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
@@ -119,6 +119,7 @@ var Snake = /** @class */ (function () {
         // check if the snake has hit the wall
         if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
             console.log("collision with wall");
+            api.setGameOver(api);
             api.mainLoop();
         }
         // check if the snake has hit itself
@@ -126,7 +127,7 @@ var Snake = /** @class */ (function () {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
                     console.log("collision with self");
-                    api.store.gameOver = true;
+                    api.setGameOver(api);
                     api.mainLoop(api);
                 }
             }
@@ -181,6 +182,11 @@ exports.api = {
         (_f = _this === null || _this === void 0 ? void 0 : _this.api) === null || _f === void 0 ? void 0 : _f.store.food = new Food(exports.api);
         console.log(_this.api);
         document.addEventListener("keydown", _this.api.store.snake.changeDirection);
+        // get high score from local storage
+        var highScore = localStorage.getItem("highScore");
+        if (highScore) {
+            document.getElementById("highscore").innerHTML = "High Score: ".concat(highScore);
+        }
     },
     getBoardState: function () {
         // get the current state of the board indicating what cells are empty, occupied by the snake, occupied by a “food item”
@@ -209,9 +215,25 @@ exports.api = {
         };
     },
     start: function () { this.store.pause = false; this.mainLoop(); },
+    setGameOver: function () {
+        document.querySelector("#message").innerHTML = "Game Over";
+        console.log("setGameOver called", this);
+        this.store.gameOver = true;
+        // save high score to local storage if it is greater than the current high score
+        var highScore = localStorage.getItem("highScore");
+        if (highScore) {
+            if (this.store.score > highScore) {
+                localStorage.setItem("highScore", this.store.score.toString());
+            }
+        }
+        // if no high score save it to local storage
+        else {
+            localStorage.setItem("highScore", this.store.score.toString());
+        }
+    },
     pause: function () { this.store.pause = true; },
     restart: function () {
-        this.store.gameOver = true;
+        this.setGameOver.bind(this);
         this.store.score = 3;
         this.store.snake.remove(this);
         this.store.snake = new Snake(this);
@@ -270,6 +292,9 @@ exports.api = {
     setDifficulty: function (difficulty) {
         this.store.difficulty = difficulty;
         this.store.interval = this.constants["INTERVALS"][difficulty.toUpperCase()];
+    },
+    changeDirection: function (direction) {
+        this.store.snake.changeDirection({ keyCode: this.constants.KEYS[direction] });
     },
     setBoardSize: function (boardSize) {
         this.store.gridSize = boardSize;
