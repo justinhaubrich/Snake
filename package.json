@@ -1,0 +1,33 @@
+{
+  "name": "snake",
+  "version": "0.0.1",
+  "description": "A game of snake",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "sass": "sass --watch assets/styles/sass/main.sass assets/styles/main.css",
+    "tsc" : "tsc -w --outDir ./assets/js/ ./assets/ts/*",
+    "watch": "webpack --watch",
+    "dev": "webpack serve"
+  },
+  "keywords": [
+    "snake",
+    "js",
+    "ts",
+    "browser"
+  ],
+  "author": "Justin Haubrich",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "webpack": "5.7",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.9.2"
+  },
+  "dependencies": {
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1"
+  }
+}

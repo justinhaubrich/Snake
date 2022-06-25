@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "outDir": "./assets/js",
+        "removeComments": true,
+        "module": "ES2022",
+
+    },
+    "include": ["assets/ts/*"],
+}

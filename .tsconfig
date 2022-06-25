@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "outDir": "./assets/js",
+        "removeComments": true,
+
+    },
+    "include": ["assets/ts/*"],
+}
