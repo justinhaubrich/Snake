@@ -9,6 +9,28 @@ body {
 body #gameover {
   color: white;
 }
+body #grid_wrapper {
+  position: relative;
+  width: 71vh;
+  height: 71vh;
+  margin: 0 auto;
+}
+body #grid_wrapper #message, body #grid_wrapper #score, body #grid_wrapper #highscore {
+  color: rgb(39, 20, 31);
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  position: absolute;
+  left: 15px;
+}
+body #grid_wrapper #message {
+  top: 5px;
+}
+body #grid_wrapper #score {
+  top: 20px;
+}
+body #grid_wrapper #highscore {
+  top: 35px;
+}
 body #grid.grid-class {
   display: flex;
   flex-wrap: wrap;
@@ -21,9 +43,12 @@ body #grid.grid-class {
   height: 70vh !important;
 }
 body .snake-class {
-  background-color: rgb(39, 20, 31);
+  background-color: #28c641;
   width: 90%;
   height: 90%;
+}
+body .snake-class.dead {
+  background-color: #c7f0d8;
 }
 body .food {
   background-color: rgb(172, 152, 164);

@@ -222,8 +222,9 @@ exports.api = {
         // save high score to local storage if it is greater than the current high score
         var highScore = localStorage.getItem("highScore");
         if (highScore) {
-            if (this.store.score > highScore) {
+            if (this.store.score > parseInt(highScore)) {
                 localStorage.setItem("highScore", this.store.score.toString());
+                document.querySelector("#message").innerHTML += "\nNew High Score! You are a boss!";
             }
         }
         // if no high score save it to local storage

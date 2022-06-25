@@ -2,6 +2,10 @@ body
     $dark-color: rgb(39, 20, 31)
     $mid-color: rgb(172, 152, 164)
     $light-color: rgb(239, 239, 255)
+    $light-green: #c7f0d8
+    $dark-green: #43523d
+    $bright-green: #28c641
+    $nokia-color: #003366
     background-color: $dark-color
     color: #efefef
     -webkit-user-select: none
@@ -10,6 +14,23 @@ body
     user-select: none
     #gameover
         color: white
+    #grid_wrapper
+        position: relative
+        width: 71vh
+        height: 71vh
+        margin: 0 auto
+        #message, #score, #highscore
+            color: $dark-color
+            font-family: 'Roboto', sans-serif
+            text-transform: uppercase
+            position: absolute
+            left: 15px
+        #message
+            top: 5px
+        #score
+            top: 20px
+        #highscore
+            top: 35px
     #grid.grid-class
         display: flex
         flex-wrap: wrap
@@ -21,9 +42,11 @@ body
         width: 70vh !important
         height: 70vh !important
     .snake-class
-        background-color: $dark-color
+        background-color: $bright-green
         width: 90%
         height: 90%
+    .snake-class.dead
+        background-color: $light-green
 
     .food
         background-color: $mid-color
