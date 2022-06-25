@@ -28,8 +28,8 @@ var Food = /** @class */ (function () {
 var Snake = /** @class */ (function () {
     function Snake(grid, constants, api) {
         //velocity for x and y direction of snake movement
-        this.vx = 1;
-        this.vy = 1;
+        this.vx = 0;
+        this.vy = -1;
         this.changingDirection = false;
         // initialize snake body in middle of grid
         var tiles = grid.querySelectorAll(".tile-class");
@@ -37,7 +37,7 @@ var Snake = /** @class */ (function () {
         console.log("instantiating snake", grid, gridSize, tiles);
         var middleTile = Math.floor(gridSize / 2);
         console.log("middleTile", middleTile);
-        this.body = [{ x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 4 }];
+        this.body = [{ x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 1 }];
         this.draw(api);
     }
     Snake.prototype.draw = function (api) {
@@ -54,23 +54,42 @@ var Snake = /** @class */ (function () {
         });
     };
     Snake.prototype.move = function (api) {
-        var _this = this;
         // move the snake by adding the velocity to the body parts x and y coordinates
-        this.body.forEach(function (bodyPart, index) {
-            console.log("moving snake", bodyPart, index);
-            if (index == 0) {
-                bodyPart.x += _this.vx;
-                bodyPart.y += _this.vy;
-            }
-            else {
-                bodyPart.x = _this.body[index - 1].x;
-                bodyPart.y = _this.body[index - 1].y;
-            }
-        });
+        // this.body.forEach((bodyPart: Coords, index: number) => {
+        // console.log(`moving snake`, bodyPart, index)
+        //     if (index == 0) {
+        //         bodyPart.x += this.vx
+        //         bodyPart.y += this.vy
+        //     } else {
+        //         bodyPart.x = this.body[index - 1].x
+        //         bodyPart.y = this.body[index - 1].y
+        //     }
+        // })
+        // move the snake, add a head and pop the tail if not eating food
+        var head = { x: this.body[0].x + this.vx, y: this.body[0].y + this.vy };
+        // add the head to the body
+        this.body.unshift(head);
+        // add the new head to the tile
+        var selector = ".tile-class[data-x=\"".concat(head.x, "\"][data-y=\"").concat(head.y, "\"]");
+        api.store.grid.querySelector(selector).appendChild(document.createElement('div.snake-class'));
+        // check if the snake has eaten food
+        if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
+            api.store.score += 1;
+            document.getElementById("score").innerHTML = "Score: ".concat(api.store.score);
+            // generate a new food
+        }
+        else {
+            // remove the tail from the tile grid
+            var tile = api.store.grid.querySelector(".tile-class[data-x=\"".concat(this.body[this.body.length - 1].x, "\"][data-y=\"").concat(this.body[this.body.length - 1].y, "\"]"));
+            console.log(tile);
+            tile.empty();
+            // pop the tail
+            this.body.pop();
+        }
         // check if the snake has hit the wall or itself
         this.checkCollision(api);
-        // draw the snake
-        this.draw(api);
+        // delete the old body part and draw the new one
+        Array.from(document.querySelectorAll(".snake-class")).forEach(function (bodyPart) { return bodyPart.remove(); });
     };
     Snake.prototype.checkCollision = function (api) {
         console.log("checking collision");

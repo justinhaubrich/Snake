@@ -26,8 +26,8 @@ class Food {
 class Snake {
     public body: Array<Coords>;
     //velocity for x and y direction of snake movement
-    public vx: number = 1;
-    public vy: number = 1;
+    public vx: number = 0;
+    public vy: number = -1;
     public changingDirection: Boolean = false
     constructor(
         grid: HTMLElement,
@@ -40,7 +40,7 @@ class Snake {
         console.log(`instantiating snake`, grid, gridSize, tiles)
         const middleTile: number = Math.floor(gridSize / 2)
         console.log(`middleTile`, middleTile)
-        this.body = [{ x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 4 }]
+        this.body = [{ x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 1 }]
         this.draw(api)
     }
 
@@ -60,21 +60,40 @@ class Snake {
     }
     public move(api: Api) {
         // move the snake by adding the velocity to the body parts x and y coordinates
-        this.body.forEach((bodyPart: Coords, index: number) => {
-        console.log(`moving snake`, bodyPart, index)
-            if (index == 0) {
-                bodyPart.x += this.vx
-                bodyPart.y += this.vy
-            } else {
-                bodyPart.x = this.body[index - 1].x
-                bodyPart.y = this.body[index - 1].y
-            }
+        // this.body.forEach((bodyPart: Coords, index: number) => {
+        // console.log(`moving snake`, bodyPart, index)
+        //     if (index == 0) {
+        //         bodyPart.x += this.vx
+        //         bodyPart.y += this.vy
+        //     } else {
+        //         bodyPart.x = this.body[index - 1].x
+        //         bodyPart.y = this.body[index - 1].y
+        //     }
+        // })
+        // move the snake, add a head and pop the tail if not eating food
+        const head: Coords = {x: this.body[0].x + this.vx, y: this.body[0].y + this.vy}
+        // add the head to the body
+        this.body.unshift(head)
+        // add the new head to the tile
+        const selector: string = `.tile-class[data-x="${head.x}"][data-y="${head.y}"]`
+        api.store.grid.querySelector(selector).appendChild(document.createElement('div.snake-class'))
+        // check if the snake has eaten food
+        if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
+            api.store.score += 1
+            document.getElementById(`score`).innerHTML = `Score: ${api.store.score}`
+            // generate a new food
+        } else {
+            // remove the tail from the tile grid
+            const tile = api.store.grid.querySelector(`.tile-class[data-x="${this.body[this.body.length - 1].x}"][data-y="${this.body[this.body.length - 1].y}"]`)
+            console.log(tile)
+            tile.empty()
+            // pop the tail
+            this.body.pop()
         }
-        )
         // check if the snake has hit the wall or itself
         this.checkCollision(api)
-        // draw the snake
-        this.draw(api)
+        // delete the old body part and draw the new one
+        Array.from(document.querySelectorAll(`.snake-class`)).forEach(bodyPart => bodyPart.remove())
     }
     public checkCollision(api: Api) {
         console.log(`checking collision`)
