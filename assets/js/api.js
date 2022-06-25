@@ -55,23 +55,15 @@ var Snake = /** @class */ (function () {
     };
     Snake.prototype.move = function (api) {
         // move the snake by adding the velocity to the body parts x and y coordinates
-        // this.body.forEach((bodyPart: Coords, index: number) => {
-        // console.log(`moving snake`, bodyPart, index)
-        //     if (index == 0) {
-        //         bodyPart.x += this.vx
-        //         bodyPart.y += this.vy
-        //     } else {
-        //         bodyPart.x = this.body[index - 1].x
-        //         bodyPart.y = this.body[index - 1].y
-        //     }
-        // })
         // move the snake, add a head and pop the tail if not eating food
         var head = { x: this.body[0].x + this.vx, y: this.body[0].y + this.vy };
         // add the head to the body
         this.body.unshift(head);
         // add the new head to the tile
         var selector = ".tile-class[data-x=\"".concat(head.x, "\"][data-y=\"").concat(head.y, "\"]");
-        api.store.grid.querySelector(selector).appendChild(document.createElement('div.snake-class'));
+        var bodyPart = document.createElement('div');
+        bodyPart.classList.add('snake-class');
+        api.store.grid.querySelector(selector).appendChild(bodyPart);
         // check if the snake has eaten food
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
             api.store.score += 1;
@@ -82,14 +74,12 @@ var Snake = /** @class */ (function () {
             // remove the tail from the tile grid
             var tile = api.store.grid.querySelector(".tile-class[data-x=\"".concat(this.body[this.body.length - 1].x, "\"][data-y=\"").concat(this.body[this.body.length - 1].y, "\"]"));
             console.log(tile);
-            tile.empty();
+            tile.children[0].remove();
             // pop the tail
             this.body.pop();
         }
         // check if the snake has hit the wall or itself
         this.checkCollision(api);
-        // delete the old body part and draw the new one
-        Array.from(document.querySelectorAll(".snake-class")).forEach(function (bodyPart) { return bodyPart.remove(); });
     };
     Snake.prototype.checkCollision = function (api) {
         console.log("checking collision");
