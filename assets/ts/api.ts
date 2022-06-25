@@ -1,23 +1,29 @@
 import { Api } from './types';
-import { Coords } from './types';
+import { Coords, Store } from './types';
 
 class Snake {
     public body: Array<Coords>;
     constructor(
-        public grid: HTMLElement,
-        public constants: Object,
-        public api: Api
+        grid: HTMLElement,
+        constants: Object,
+        api: Api
     ) {
-        this.body = [{ }]
+        // initialize snake body in middle of grid
+        const tiles: NodeListOf<Element> = grid.querySelectorAll(`.tile-class`)
+        const gridSize: number = Math.sqrt(tiles.length)
+        console.log(`instantiating snake`, grid, gridSize, tiles)
+        const middleTile: number = Math.ceil(gridSize / 2)
+        this.body = [{ x: middleTile, y: middleTile -3 }, { x: middleTile, y: middleTile - 2 }, { x: middleTile, y: middleTile - 1 }]
     }
 }
 
 export const api: Api = {
-    initGame: (grid: HTMLElement, constants: Object) => {
-        const snake = new Snake(grid, constants, api)
+    initGame: (grid: HTMLElement, constants: Object, store: Store) => {
         this.api.constants = constants
-        console.log(`initiating`, this)
+        console.log(`initiating`, this, store)
         this?.api?.setupGrid(grid)
+        this?.api?.store = store
+        this?.api?.store.snake = new Snake(grid, constants, api)
     },
     mainLoop: () => {
         console.log(`main loop`)
@@ -28,7 +34,7 @@ export const api: Api = {
         const { TILE_SIZE } = this.api.constants
         const tileSize = TILE_SIZE || 100
         console.log(`gridSize: `, gridSize, TILE_SIZE)
-        // set up the grid
+        // style the grid
         grid.style.backgroundColor = this.api.constants.BACKGROUND_COLOR
         grid.style.height = `${gridSize * tileSize}px`
         grid.style.width = `${gridSize * tileSize}px`
@@ -47,4 +53,5 @@ export const api: Api = {
         }
     },
     constants: null,
+    store: null,
 }

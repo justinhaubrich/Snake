@@ -4,20 +4,23 @@ exports.__esModule = true;
 exports.api = void 0;
 var Snake = /** @class */ (function () {
     function Snake(grid, constants, api) {
-        this.grid = grid;
-        this.constants = constants;
-        this.api = api;
-        this.body = [{}];
+        // initialize snake body in middle of grid
+        var tiles = grid.querySelectorAll(".tile-class");
+        var gridSize = Math.sqrt(tiles.length);
+        console.log("instantiating snake", grid, gridSize, tiles);
+        var middleTile = Math.ceil(gridSize / 2);
+        this.body = [{ x: middleTile, y: middleTile - 3 }, { x: middleTile, y: middleTile - 2 }, { x: middleTile, y: middleTile - 1 }];
     }
     return Snake;
 }());
 exports.api = {
-    initGame: function (grid, constants) {
-        var _a;
-        var snake = new Snake(grid, constants, exports.api);
+    initGame: function (grid, constants, store) {
+        var _a, _b, _c;
         _this.api.constants = constants;
-        console.log("initiating", _this);
+        console.log("initiating", _this, store);
         (_a = _this === null || _this === void 0 ? void 0 : _this.api) === null || _a === void 0 ? void 0 : _a.setupGrid(grid);
+        (_b = _this === null || _this === void 0 ? void 0 : _this.api) === null || _b === void 0 ? void 0 : _b.store = store;
+        (_c = _this === null || _this === void 0 ? void 0 : _this.api) === null || _c === void 0 ? void 0 : _c.store.snake = new Snake(grid, constants, exports.api);
     },
     mainLoop: function () {
         console.log("main loop");
@@ -28,7 +31,7 @@ exports.api = {
         var TILE_SIZE = _this.api.constants.TILE_SIZE;
         var tileSize = TILE_SIZE || 100;
         console.log("gridSize: ", gridSize, TILE_SIZE);
-        // set up the grid
+        // style the grid
         grid.style.backgroundColor = _this.api.constants.BACKGROUND_COLOR;
         grid.style.height = "".concat(gridSize * tileSize, "px");
         grid.style.width = "".concat(gridSize * tileSize, "px");
@@ -46,5 +49,6 @@ exports.api = {
             }
         }
     },
-    constants: null
+    constants: null,
+    store: null
 };
