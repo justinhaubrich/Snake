@@ -4,8 +4,8 @@ import { Coords, Store } from './types';
 class Food {
     constructor(api) { 
         // generate a random location for the food
-        this.body.x = Math.ceil(Math.random() * api.store.gridSize)
-        this.body.y = Math.ceil(Math.random() * api.store.gridSize)
+        this.body.x = Math.floor(Math.random() * api.store.gridSize)
+        this.body.y = Math.floor(Math.random() * api.store.gridSize)
         console.log(`Food Instantiated at ${this.body.x}, ${this.body.y}`)
         this.draw()
     }

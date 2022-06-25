@@ -6,8 +6,8 @@ var Food = /** @class */ (function () {
     function Food(api) {
         this.body = { x: 0, y: 0 };
         // generate a random location for the food
-        this.body.x = Math.ceil(Math.random() * api.store.gridSize);
-        this.body.y = Math.ceil(Math.random() * api.store.gridSize);
+        this.body.x = Math.floor(Math.random() * api.store.gridSize);
+        this.body.y = Math.floor(Math.random() * api.store.gridSize);
         console.log("Food Instantiated at ".concat(this.body.x, ", ").concat(this.body.y));
         this.draw();
     }
