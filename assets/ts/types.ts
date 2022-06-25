@@ -2,8 +2,9 @@ export interface Api {
     initGame: (grid: HTMLElement, constants: Object, store: Object) => void;
     mainLoop: () => void;
     setupGrid: (grid: HTMLElement) => void;
+    start: () => void;
     constants: Object | null;
-    store: Object | null;
+    store: Store | null;
 }
 
 export interface Coords {
@@ -12,7 +13,7 @@ export interface Coords {
 }
 
 export interface Store {
-    snake: any;
+    snake: Snake;
     food: { body: Coords, draw: () => void };
     score: number;
     grid: HTMLElement;
@@ -20,4 +21,16 @@ export interface Store {
     tileSize: number;
     interval: number;
     gameOver: Boolean;
+    pause: Boolean;
+}
+
+export interface Snake {
+    body: Coords[];
+    vx: number;
+    vy: number;
+    changingDirection: Boolean;
+    draw: () => void;
+    changeDirection: (event: KeyboardEvent) => void;
+    move: (api: Api) => void;
+    remove: (api: Api) => void;
 }

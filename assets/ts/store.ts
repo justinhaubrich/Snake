@@ -1,4 +1,5 @@
 export const store = {
-    score: 0,
+    score: 3,
     interval: 500,
+    pause: false,
 }

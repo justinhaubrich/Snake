@@ -39,18 +39,28 @@ class Snake {
     public vy: number = -1;
     public changingDirection: Boolean = false
     constructor(
-        grid: HTMLElement,
-        constants: Object,
         api: Api
     ) {
         // initialize snake body in middle of grid
-        const tiles: NodeListOf<Element> = grid.querySelectorAll(`.tile-class`)
+        const tiles: NodeListOf<Element> = api.store.grid.querySelectorAll(`.tile-class`)
         const gridSize: number = Math.sqrt(tiles.length)
-        console.log(`instantiating snake`, grid, gridSize, tiles)
+        console.log(`instantiating snake`, api.store.grid, gridSize, tiles)
         const middleTile: number = Math.floor(gridSize / 2)
         console.log(`middleTile`, middleTile)
         this.body = [{ x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 1 }]
         this.draw(api)
+    }
+
+    public remove(api) {
+        // remove the snake from the grid
+        console.log(`remove snake`)
+        this.body.forEach((bodyPart: Coords) => {
+            const selector: string = `.tile-class[data-x="${bodyPart.x}"][data-y="${bodyPart.y}"]`
+            const tile: HTMLElement = api.store.grid.querySelector(selector)
+            console.log(`removing bodyPart`, bodyPart, tile, selector)
+            if (tile)
+                Array.from(tile.children).forEach(el => el.remove())
+        })
     }
 
     public draw(api: Api) {
@@ -174,16 +184,29 @@ export const api: Api = {
         this?.api?.store = store
         this?.api?.store?.grid = grid
         this?.api?.setupGrid(grid)
-        this?.api?.store.snake = new Snake(grid, constants, api)
+        console.log(this.api.store)
+        this?.api?.store.snake = new Snake(api)
         this?.api?.store.food = new Food(api)
         console.log(this.api)
         document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
-        this?.api?.mainLoop(this.api)
     },
-    mainLoop: (api: Api) => {
+    start () { console.log(this); this.store.pause = false;  this.mainLoop();},
+    pause () { this.store.pause = true },
+    restart () {
+        this.store.gameOver = true 
+        this.store.score = 0
+        this.store.snake.remove(this)
+        this.store.snake = new Snake(this)
+        this.store.food.remove(this)
+        this.store.food = new Food(this)
+        this.store.gameOver = false
+        this.start()
+    },
+    mainLoop: () => {
         // check if game is over
-        console.log(`main loop`, api, this.api)
+        console.log(`main loop`)
         this.api.store.snake.changingDirection = false
+        if (this.api.store.pause) return
         if (!this.api.store.gameOver) {
             setTimeout(() => {
                 this.api.store.snake.move(this.api)

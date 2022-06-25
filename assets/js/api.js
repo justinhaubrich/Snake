@@ -33,20 +33,31 @@ var Food = /** @class */ (function () {
     return Food;
 }());
 var Snake = /** @class */ (function () {
-    function Snake(grid, constants, api) {
+    function Snake(api) {
         //velocity for x and y direction of snake movement
         this.vx = 0;
         this.vy = -1;
         this.changingDirection = false;
         // initialize snake body in middle of grid
-        var tiles = grid.querySelectorAll(".tile-class");
+        var tiles = api.store.grid.querySelectorAll(".tile-class");
         var gridSize = Math.sqrt(tiles.length);
-        console.log("instantiating snake", grid, gridSize, tiles);
+        console.log("instantiating snake", api.store.grid, gridSize, tiles);
         var middleTile = Math.floor(gridSize / 2);
         console.log("middleTile", middleTile);
         this.body = [{ x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 1 }];
         this.draw(api);
     }
+    Snake.prototype.remove = function (api) {
+        // remove the snake from the grid
+        console.log("remove snake");
+        this.body.forEach(function (bodyPart) {
+            var selector = ".tile-class[data-x=\"".concat(bodyPart.x, "\"][data-y=\"").concat(bodyPart.y, "\"]");
+            var tile = api.store.grid.querySelector(selector);
+            console.log("removing bodyPart", bodyPart, tile, selector);
+            if (tile)
+                Array.from(tile.children).forEach(function (el) { return el.remove(); });
+        });
+    };
     Snake.prototype.draw = function (api) {
         console.log("drawing snake");
         this.body.forEach(function (bodyPart) {
@@ -159,22 +170,36 @@ var Snake = /** @class */ (function () {
 }());
 exports.api = {
     initGame: function (grid, constants, store) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c, _d, _e, _f;
         _this.api.constants = constants;
         console.log("initiating", _this, store);
         (_a = _this === null || _this === void 0 ? void 0 : _this.api) === null || _a === void 0 ? void 0 : _a.store = store;
         (_c = (_b = _this === null || _this === void 0 ? void 0 : _this.api) === null || _b === void 0 ? void 0 : _b.store) === null || _c === void 0 ? void 0 : _c.grid = grid;
         (_d = _this === null || _this === void 0 ? void 0 : _this.api) === null || _d === void 0 ? void 0 : _d.setupGrid(grid);
-        (_e = _this === null || _this === void 0 ? void 0 : _this.api) === null || _e === void 0 ? void 0 : _e.store.snake = new Snake(grid, constants, exports.api);
+        console.log(_this.api.store);
+        (_e = _this === null || _this === void 0 ? void 0 : _this.api) === null || _e === void 0 ? void 0 : _e.store.snake = new Snake(exports.api);
         (_f = _this === null || _this === void 0 ? void 0 : _this.api) === null || _f === void 0 ? void 0 : _f.store.food = new Food(exports.api);
         console.log(_this.api);
         document.addEventListener("keydown", _this.api.store.snake.changeDirection);
-        (_g = _this === null || _this === void 0 ? void 0 : _this.api) === null || _g === void 0 ? void 0 : _g.mainLoop(_this.api);
     },
-    mainLoop: function (api) {
+    start: function () { console.log(this); this.store.pause = false; this.mainLoop(); },
+    pause: function () { this.store.pause = true; },
+    restart: function () {
+        this.store.gameOver = true;
+        this.store.score = 0;
+        this.store.snake.remove(this);
+        this.store.snake = new Snake(this);
+        this.store.food.remove(this);
+        this.store.food = new Food(this);
+        this.store.gameOver = false;
+        this.start();
+    },
+    mainLoop: function () {
         // check if game is over
-        console.log("main loop", api, _this.api);
+        console.log("main loop");
         _this.api.store.snake.changingDirection = false;
+        if (_this.api.store.pause)
+            return;
         if (!_this.api.store.gameOver) {
             setTimeout(function () {
                 _this.api.store.snake.move(_this.api);
