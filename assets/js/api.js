@@ -240,7 +240,7 @@ exports.api = {
     },
     setupGrid: function (grid) {
         console.log("setting up grid");
-        var gridSize = _this.api.constants[_this.api.constants.DEFAULT_GRID_SIZE];
+        var gridSize = _this.api.store.gridSize || _this.api.constants[_this.api.constants.DEFAULT_GRID_SIZE];
         _this.api.store.gridSize = gridSize;
         var TILE_SIZE = _this.api.constants.TILE_SIZE;
         var tileSize = TILE_SIZE || 100;
@@ -266,6 +266,20 @@ exports.api = {
                 grid.appendChild(tile);
             }
         }
+    },
+    setDifficulty: function (difficulty) {
+        this.store.difficulty = difficulty;
+        this.store.interval = this.constants["INTERVALS"][difficulty.toUpperCase()];
+    },
+    setBoardSize: function (boardSize) {
+        this.store.gridSize = boardSize;
+        // remove all tiles from the grid
+        var grid = document.getElementById('grid');
+        while (grid.firstChild) {
+            grid.removeChild(grid.firstChild);
+        }
+        // set up the grid
+        this.initGame(grid, this.constants, this.store);
     },
     constants: null,
     store: null

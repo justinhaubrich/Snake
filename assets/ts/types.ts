@@ -35,3 +35,6 @@ export interface Snake {
     move: (api: Api) => void;
     remove: (api: Api) => void;
 }
+
+export type Difficulties = 'easy' | 'medium' | 'hard';
+export type BoardSizes = 7 | 15 | 21;

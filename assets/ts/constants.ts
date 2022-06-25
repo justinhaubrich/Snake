@@ -14,5 +14,15 @@ export const constants = {
         RIGHT: 39,
         UP: 38,
         DOWN: 40,
+    },
+    INTERVALS: {
+        EASY: 500,
+        MEDIUM: 400,
+        HARD: 300,
+    },
+    BOARD_SIZES: {
+        SM: 7,
+        MD: 15,
+        LG: 21,
     }
 }

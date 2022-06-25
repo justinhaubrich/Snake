@@ -1,5 +1,5 @@
 import { Api } from './types';
-import { Coords, Store } from './types';
+import { Coords, Store, Difficulties, BoardSizes } from './types';
 
 class Food {
     constructor(api) { 
@@ -247,7 +247,7 @@ export const api: Api = {
     },
     setupGrid: (grid: HTMLElement) => {
         console.log(`setting up grid`)
-        const gridSize = this.api.constants[this.api.constants.DEFAULT_GRID_SIZE]
+        const gridSize = this.api.store.gridSize || this.api.constants[ this.api.constants.DEFAULT_GRID_SIZE]
         this.api.store.gridSize = gridSize
         const { TILE_SIZE } = this.api.constants
         const tileSize = TILE_SIZE || 100
@@ -273,6 +273,21 @@ export const api: Api = {
                 grid.appendChild(tile)
             }
         }
+    },
+    setDifficulty (difficulty: Difficulties): void {
+        this.store.difficulty = difficulty
+        this.store.interval = this.constants[`INTERVALS`][difficulty.toUpperCase()]
+    },
+    setBoardSize (boardSize: BoardSizes): void {
+        this.store.gridSize = boardSize
+        // remove all tiles from the grid
+        const grid = document.getElementById('grid')
+        while (grid.firstChild) {
+            grid.removeChild(grid.firstChild)
+        }
+        // set up the grid
+        this.initGame(grid, this.constants, this.store)
+
     },
     constants: null,
     store: null,
