@@ -28,15 +28,16 @@ var Food = /** @class */ (function () {
 var Snake = /** @class */ (function () {
     function Snake(grid, constants, api) {
         //velocity for x and y direction of snake movement
-        this.vx = 0;
-        this.vy = 0;
+        this.vx = 1;
+        this.vy = 1;
         this.changingDirection = false;
         // initialize snake body in middle of grid
         var tiles = grid.querySelectorAll(".tile-class");
         var gridSize = Math.sqrt(tiles.length);
         console.log("instantiating snake", grid, gridSize, tiles);
-        var middleTile = Math.ceil(gridSize / 2);
-        this.body = [{ x: middleTile, y: middleTile - 3 }, { x: middleTile, y: middleTile - 2 }, { x: middleTile, y: middleTile - 1 }];
+        var middleTile = Math.floor(gridSize / 2);
+        console.log("middleTile", middleTile);
+        this.body = [{ x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 4 }];
         this.draw(api);
     }
     Snake.prototype.draw = function (api) {
@@ -45,12 +46,52 @@ var Snake = /** @class */ (function () {
             var body = document.createElement('div');
             body.classList.add('snake-class');
             console.log("drawing snake part", bodyPart, body);
-            // render the snake body part on the grid in the correct tile if a snake has not yet been rendered
+            // render the snake body part on the grid in the correct tile
             var selector = ".tile-class[data-x=\"".concat(bodyPart.x, "\"][data-y=\"").concat(bodyPart.y, "\"]");
             console.log("selector", selector, api.store.grid);
             var tile = api.store.grid.querySelector(selector);
             tile.appendChild(body);
-            // if a snake has already been rendered, then the body part should be moved to the correct tile (nevermind, just make a separate method for  moving)
+        });
+    };
+    Snake.prototype.move = function (api) {
+        var _this = this;
+        // move the snake by adding the velocity to the body parts x and y coordinates
+        this.body.forEach(function (bodyPart, index) {
+            console.log("moving snake", bodyPart, index);
+            if (index == 0) {
+                bodyPart.x += _this.vx;
+                bodyPart.y += _this.vy;
+            }
+            else {
+                bodyPart.x = _this.body[index - 1].x;
+                bodyPart.y = _this.body[index - 1].y;
+            }
+        });
+        // check if the snake has hit the wall or itself
+        this.checkCollision(api);
+        // draw the snake
+        this.draw(api);
+    };
+    Snake.prototype.checkCollision = function (api) {
+        console.log("checking collision");
+        // check if the snake has hit the wall or itself
+        var head = this.body[0];
+        console.log("api is", api, head);
+        var tiles = api.store.grid.querySelectorAll(".tile-class");
+        var gridSize = Math.sqrt(tiles.length);
+        // check if the snake has hit the wall
+        if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
+            console.log("collision with wall");
+            api.mainLoop();
+        }
+        // check if the snake has hit itself
+        this.body.forEach(function (bodyPart, index) {
+            if (index > 0) {
+                if (head.x == bodyPart.x && head.y == bodyPart.y) {
+                    console.log("collision with self");
+                    api.mainLoop();
+                }
+            }
         });
     };
     return Snake;
@@ -92,8 +133,8 @@ exports.api = {
                 tile.style.top = "".concat(i * tileSize / gridSize, "%");
                 tile.style.left = "".concat(j * tileSize / gridSize, "%");
                 // add the x and y coords to the dataset
-                tile.dataset.x = "".concat(i);
-                tile.dataset.y = "".concat(j);
+                tile.dataset.y = "".concat(i);
+                tile.dataset.x = "".concat(j);
                 grid.appendChild(tile);
             }
         }

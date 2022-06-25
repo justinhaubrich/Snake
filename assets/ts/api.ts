@@ -26,8 +26,8 @@ class Food {
 class Snake {
     public body: Array<Coords>;
     //velocity for x and y direction of snake movement
-    public vx: number = 0;
-    public vy: number = 0;
+    public vx: number = 1;
+    public vy: number = 1;
     public changingDirection: Boolean = false
     constructor(
         grid: HTMLElement,
@@ -38,8 +38,9 @@ class Snake {
         const tiles: NodeListOf<Element> = grid.querySelectorAll(`.tile-class`)
         const gridSize: number = Math.sqrt(tiles.length)
         console.log(`instantiating snake`, grid, gridSize, tiles)
-        const middleTile: number = Math.ceil(gridSize / 2)
-        this.body = [{ x: middleTile, y: middleTile -3 }, { x: middleTile, y: middleTile - 2 }, { x: middleTile, y: middleTile - 1 }]
+        const middleTile: number = Math.floor(gridSize / 2)
+        console.log(`middleTile`, middleTile)
+        this.body = [{ x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 4 }]
         this.draw(api)
     }
 
@@ -49,14 +50,54 @@ class Snake {
             const body: HTMLElement = document.createElement('div')
             body.classList.add('snake-class')
             console.log(`drawing snake part`, bodyPart, body)
-            // render the snake body part on the grid in the correct tile if a snake has not yet been rendered
+            // render the snake body part on the grid in the correct tile
             const selector: string = `.tile-class[data-x="${bodyPart.x}"][data-y="${bodyPart.y}"]`
             console.log(`selector`, selector, api.store.grid)
             const tile: HTMLElement = api.store.grid.querySelector(selector)
             tile.appendChild(body)
-            // if a snake has already been rendered, then the body part should be moved to the correct tile (nevermind, just make a separate method for  moving)
 
         })
+    }
+    public move(api: Api) {
+        // move the snake by adding the velocity to the body parts x and y coordinates
+        this.body.forEach((bodyPart: Coords, index: number) => {
+        console.log(`moving snake`, bodyPart, index)
+            if (index == 0) {
+                bodyPart.x += this.vx
+                bodyPart.y += this.vy
+            } else {
+                bodyPart.x = this.body[index - 1].x
+                bodyPart.y = this.body[index - 1].y
+            }
+        }
+        )
+        // check if the snake has hit the wall or itself
+        this.checkCollision(api)
+        // draw the snake
+        this.draw(api)
+    }
+    public checkCollision(api: Api) {
+        console.log(`checking collision`)
+        // check if the snake has hit the wall or itself
+        const head: Coords = this.body[0]
+        console.log(`api is`, api, head)
+        const tiles: NodeListOf<Element> = api.store.grid.querySelectorAll(`.tile-class`)
+        const gridSize: number = Math.sqrt(tiles.length)
+        // check if the snake has hit the wall
+        if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
+            console.log(`collision with wall`)
+            api.mainLoop()
+        }
+        // check if the snake has hit itself
+        this.body.forEach((bodyPart: Coords, index: number) => {
+            if (index > 0) {
+                if (head.x == bodyPart.x && head.y == bodyPart.y) {
+                    console.log(`collision with self`)
+                    api.mainLoop()
+                }
+            }
+        }
+        )
     }
 }
 
@@ -96,8 +137,8 @@ export const api: Api = {
                 tile.style.top = `${i * tileSize / gridSize}%`
                 tile.style.left = `${j * tileSize / gridSize}%`
                 // add the x and y coords to the dataset
-                tile.dataset.x = `${i}`
-                tile.dataset.y = `${j}`
+                tile.dataset.y = `${i}`
+                tile.dataset.x = `${j}`
                 grid.appendChild(tile)
             }
         }
