@@ -3,7 +3,16 @@ body {
   color: #efefef;
 }
 body #gameover {
-  color: rgb(127, 105, 105);
+  color: white;
+}
+body .grid-class {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  border-radius: 3px;
+  outline: 5px solid rgb(172, 152, 164);
+  outline-offset: 4px;
+  margin-top: 50px;
 }
 
 /*# sourceMappingURL=main.css.map */

@@ -1,5 +1,16 @@
 body
-    background-color: rgb(39, 20, 31)
+    $dark-color: rgb(39, 20, 31)
+    $mid-color: rgb(172, 152, 164)
+    $light-color: rgb(239, 239, 255)
+    background-color: $dark-color
     color: #efefef
     #gameover
         color: white
+    .grid-class
+        display: flex
+        flex-wrap: wrap
+        margin: 0 auto
+        border-radius: 3px
+        outline: 5px solid $mid-color
+        outline-offset: 4px
+        margin-top: 50px
