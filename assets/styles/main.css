@@ -5,7 +5,7 @@ body {
 body #gameover {
   color: white;
 }
-body .grid-class {
+body #grid.grid-class {
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
@@ -13,6 +13,19 @@ body .grid-class {
   outline: 5px solid rgb(172, 152, 164);
   outline-offset: 4px;
   margin-top: 50px;
+  width: 70vh !important;
+  height: 70vh !important;
+}
+body .snake-class {
+  background-color: rgb(39, 20, 31);
+  width: 90%;
+  height: 90%;
+}
+body .food {
+  background-color: rgb(172, 152, 164);
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
 }
 
 /*# sourceMappingURL=main.css.map */

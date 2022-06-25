@@ -11,7 +11,11 @@ export interface Coords {
     y: number;
 }
 
-interface Store {
+export interface Store {
     snake: any;
+    food: { body: Coords, draw: () => void };
     score: number;
+    grid: HTMLElement;
+    gridSize: number;
+    tileSize: number;
 }
