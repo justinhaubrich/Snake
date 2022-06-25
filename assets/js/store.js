@@ -2,5 +2,5 @@
 exports.__esModule = true;
 exports.store = void 0;
 exports.store = {
-    snake: {}
+    score: 0
 };

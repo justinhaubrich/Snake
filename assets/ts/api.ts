@@ -9,6 +9,8 @@ class Food {
         console.log(`Food Instantiated at ${this.body.x}, ${this.body.y}`)
         this.draw()
     }
+    public element: HTMLElement;
+    public tile: HTMLElement;
     public body: Coords = { x: 0, y: 0 };
     public draw () {
         // draw the food
@@ -17,9 +19,16 @@ class Food {
         // append it to the correct tile
         Array.from(api.store.grid.children).forEach( tile => {
             if (parseInt(tile.dataset.x) == this.body.x && parseInt(tile.dataset.y) == this.body.y) {
-                tile.appendChild(food)
+                const _tile = tile as HTMLElement
+                _tile.appendChild(food)
+                this.tile = _tile
+                this.element = food
             }
         }) //.appendChild(food)
+    }
+    public remove() {
+        console.log('removing food')
+        this.tile.children[0].remove()
     }
 }
 
@@ -73,7 +82,10 @@ class Snake {
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
             api.store.score += 1
             document.getElementById(`score`).innerHTML = `Score: ${api.store.score}`
-            // generate a new food
+            // remove old food element from tile generate a new food
+            api.store.food.remove()
+            api.store.food = new Food(api)
+
         } else {
             // remove the tail from the tile grid
             const tile = api.store.grid.querySelector(`.tile-class[data-x="${this.body[this.body.length - 1].x}"][data-y="${this.body[this.body.length - 1].y}"]`)

@@ -19,9 +19,16 @@ var Food = /** @class */ (function () {
         // append it to the correct tile
         Array.from(exports.api.store.grid.children).forEach(function (tile) {
             if (parseInt(tile.dataset.x) == _this.body.x && parseInt(tile.dataset.y) == _this.body.y) {
-                tile.appendChild(food);
+                var _tile = tile;
+                _tile.appendChild(food);
+                _this.tile = _tile;
+                _this.element = food;
             }
         }); //.appendChild(food)
+    };
+    Food.prototype.remove = function () {
+        console.log('removing food');
+        this.tile.children[0].remove();
     };
     return Food;
 }());
@@ -68,7 +75,9 @@ var Snake = /** @class */ (function () {
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
             api.store.score += 1;
             document.getElementById("score").innerHTML = "Score: ".concat(api.store.score);
-            // generate a new food
+            // remove old food element from tile generate a new food
+            api.store.food.remove();
+            api.store.food = new Food(api);
         }
         else {
             // remove the tail from the tile grid
