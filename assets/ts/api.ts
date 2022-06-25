@@ -190,6 +190,33 @@ export const api: Api = {
         console.log(this.api)
         document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
     },
+    getBoardState: () => {
+        // get the current state of the board indicating what cells are empty, occupied by the snake, occupied by a “food item”
+        const grid = document.getElementById('grid')
+        const tiles = grid.querySelectorAll('.tile-class')
+        const boardState = []
+        let board = Array.from(tiles).map((tile: HTMLElement) => {
+            const tileState = {
+                x: parseInt(tile.dataset.x),
+                y: parseInt(tile.dataset.y),
+                contents: Array.from(tile.children),
+                empty: tile.children.length == 0,
+                snake: tile.children.length > 0 && tile.children[0].classList.contains('snake-class'),
+                food: tile.children.length > 0 && tile.children[0].classList.contains('food')
+
+            }
+            return tileState
+        })
+        const empty = board.filter((tile: Tile) => tile.empty)
+        const snake = board.filter((tile: Tile) => tile.snake)
+        const food = board.filter((tile: Tile) => tile.food)
+        return {
+            board,
+            empty,
+            snake,
+            food
+        }
+    },
     start () { console.log(this); this.store.pause = false;  this.mainLoop();},
     pause () { this.store.pause = true },
     restart () {

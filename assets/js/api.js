@@ -182,6 +182,32 @@ exports.api = {
         console.log(_this.api);
         document.addEventListener("keydown", _this.api.store.snake.changeDirection);
     },
+    getBoardState: function () {
+        // get the current state of the board indicating what cells are empty, occupied by the snake, occupied by a “food item”
+        var grid = document.getElementById('grid');
+        var tiles = grid.querySelectorAll('.tile-class');
+        var boardState = [];
+        var board = Array.from(tiles).map(function (tile) {
+            var tileState = {
+                x: parseInt(tile.dataset.x),
+                y: parseInt(tile.dataset.y),
+                contents: Array.from(tile.children),
+                empty: tile.children.length == 0,
+                snake: tile.children.length > 0 && tile.children[0].classList.contains('snake-class'),
+                food: tile.children.length > 0 && tile.children[0].classList.contains('food')
+            };
+            return tileState;
+        });
+        var empty = board.filter(function (tile) { return tile.empty; });
+        var snake = board.filter(function (tile) { return tile.snake; });
+        var food = board.filter(function (tile) { return tile.food; });
+        return {
+            board: board,
+            empty: empty,
+            snake: snake,
+            food: food
+        };
+    },
     start: function () { console.log(this); this.store.pause = false; this.mainLoop(); },
     pause: function () { this.store.pause = true; },
     restart: function () {

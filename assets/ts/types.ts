@@ -1,5 +1,6 @@
 export interface Api {
     initGame: (grid: HTMLElement, constants: Object, store: Object) => void;
+    getBoardState: () => Object;
     mainLoop: () => void;
     setupGrid: (grid: HTMLElement) => void;
     start: () => void;
