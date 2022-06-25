@@ -208,16 +208,18 @@ exports.api = {
             food: food
         };
     },
-    start: function () { console.log(this); this.store.pause = false; this.mainLoop(); },
+    start: function () { this.store.pause = false; this.mainLoop(); },
     pause: function () { this.store.pause = true; },
     restart: function () {
         this.store.gameOver = true;
-        this.store.score = 0;
+        this.store.score = 3;
         this.store.snake.remove(this);
         this.store.snake = new Snake(this);
         this.store.food.remove(this);
         this.store.food = new Food(this);
         this.store.gameOver = false;
+        document.querySelector("#score").innerHTML = "Score: ".concat(this.store.score);
+        document.querySelector("#message").innerHTML = "Good luck!";
         this.start();
     },
     mainLoop: function () {
