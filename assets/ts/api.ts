@@ -15,9 +15,7 @@ class Food {
         const food = document.createElement('div')
         food.classList.add('food')
         // append it to the correct tile
-        console.log(`api.store.grid.children`,api.store.grid.children)
         Array.from(api.store.grid.children).forEach( tile => {
-            console.log(`tile loop for food`, tile)
             if (parseInt(tile.dataset.x) == this.body.x && parseInt(tile.dataset.y) == this.body.y) {
                 tile.appendChild(food)
             }

@@ -17,9 +17,7 @@ var Food = /** @class */ (function () {
         var food = document.createElement('div');
         food.classList.add('food');
         // append it to the correct tile
-        console.log("api.store.grid.children", exports.api.store.grid.children);
         Array.from(exports.api.store.grid.children).forEach(function (tile) {
-            console.log("tile loop for food", tile);
             if (parseInt(tile.dataset.x) == _this.body.x && parseInt(tile.dataset.y) == _this.body.y) {
                 tile.appendChild(food);
             }
