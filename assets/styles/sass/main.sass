@@ -1,11 +1,22 @@
+$light-color: rgb(239, 239, 255)
+$mid-color: rgb(172, 152, 164)
+body::-webkit-scrollbar-thumb
+    background-color: $mid-color
+    border-radius: 20px
+    border: 6px solid transparent
+    background-clip: content-box
+body::-webkit-scrollbar
+  width: 1em
+
+ 
+body::-webkit-scrollbar-track
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3)
 body
     $dark-color: rgb(39, 20, 31)
-    $mid-color: rgb(172, 152, 164)
-    $light-color: rgb(239, 239, 255)
     $light-green: #c7f0d8
     $dark-green: #43523d
     $bright-green: #28c641
-    $nokia-color: #003366
+    $red: #c63a28
     background-color: $dark-color
     color: #efefef
     -webkit-user-select: none
@@ -25,15 +36,15 @@ body
             text-transform: uppercase
             position: absolute
             left: 15px
-            background-color: #fff7
+            background-color: #fff4
             border-radius: 3px
             padding: 2px 5px
         #message
             top: 3px
         #score
-            top: 22px
+            top: 23px
         #highscore
-            top: 37px
+            top: 43px
     #grid.grid-class
         display: flex
         flex-wrap: wrap
@@ -45,11 +56,12 @@ body
         width: 70vh !important
         height: 70vh !important
     .snake-class
+        transition: background-color 250ms ease-in-out
         background-color: $bright-green
         width: 90%
         height: 90%
     .snake-class.dead
-        background-color: $light-green
+        background-color: $red
 
     .food
         background-color: $mid-color
@@ -60,15 +72,19 @@ body
         .button-grid
             display: flex
             justify-content: center
-            margin-top: 25px
+            width: 70vh
+            margin: 0 auto
+            margin-top: 10px
+            margin-bottom: 25px
+            flex-wrap: wrap
             button.button.big:hover
                 background: $mid-color
             button.button.big
                 z-index: 10
                 cursor: pointer
-                --y: -5px
                 content: ""
                 display: block
+                min-width: 75px
                 width: 75px
                 height: 65px
                 font-weight: bold

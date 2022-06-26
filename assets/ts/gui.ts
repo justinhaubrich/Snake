@@ -1,7 +1,15 @@
 export const gui = {
+    createButton(text: string, className: string, onClick: () => void): HTMLButtonElement {
+        const button = document.createElement('button')
+        button.innerText = text
+        button.className = className
+        button.onclick = onClick
+        return button
+    }
     setup(api) {
+        // TODO: refactor for DRY
         console.log(`setting up gui`)
-        let gui = document.querySelector('#gui')
+        const gui = document.querySelector('#gui')
         const button_grid = document.createElement('div')
         button_grid.classList.add(`button-grid`)
         gui.append(button_grid)
@@ -27,13 +35,39 @@ export const gui = {
         pause.onclick = () => { api.pause() }
         button_grid.append(pause)
 
-        const resume= document.createElement('button')
-        resume.classList.add(`big`)
-        resume.classList.add(`button`)
-        resume.innerText = `Resume`
-        resume.onclick = () => { api.start() }
-        button_grid.append(resume)
+        const small = document.createElement('button')
+        small.classList.add(`big`)
+        small.classList.add(`button`)
+        small.innerText = `Small`
+        small.onclick = () => { api.setBoardSize(7) }
+        button_grid.append(small)
 
+        const medium = document.createElement('button')
+        medium.classList.add(`big`)
+        medium.classList.add(`button`)
+        medium.innerText = `Medium`
+        medium.onclick = () => { api.setBoardSize(15) }
+        button_grid.append(medium)
 
+        const large = document.createElement('button')
+        large.classList.add(`big`)
+        large.classList.add(`button`)
+        large.innerText = `Big`
+        large.onclick = () => { api.setBoardSize(21) }
+        button_grid.append(large)
+
+        button_grid.append(this.createButton(`Easy`, `big button`, () => { api.setDifficulty('easy') }))
+        button_grid.append(this.createButton(`Medium`, `big button`, () => { api.setDifficulty('medium') }))
+        button_grid.append(this.createButton(`Hard`, `big button`, () => { api.setDifficulty('hard') }))
+
+        const dir_grid = document.createElement('div')
+        dir_grid.classList.add(`button-grid`)
+        dir_grid.classList.add(`direction`)
+        gui.append(button_grid)
+
+        button_grid.append(this.createButton(`left`, `big button`, () => { api.changeDirection('LEFT') }))
+        button_grid.append(this.createButton(`right`, `big button`, () => { api.changeDirection('RIGHT') }))
+        button_grid.append(this.createButton(`up`, `big button`, () => { api.changeDirection('UP') }))
+        button_grid.append(this.createButton(`down`, `big button`, () => { api.changeDirection('DOWN') }))
     }
 }

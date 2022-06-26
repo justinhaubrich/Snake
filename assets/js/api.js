@@ -134,6 +134,8 @@ var Snake = /** @class */ (function () {
         });
     };
     Snake.prototype.changeDirection = function (event) {
+        if ('preventDefault' in event)
+            event.preventDefault();
         var keyPress = event.keyCode;
         console.log(window.api, window.api.store.snake.vy, event);
         var KEYS = window.api.constants.KEYS;
@@ -219,9 +221,15 @@ exports.api = {
     },
     start: function () { this.store.pause = false; this.mainLoop(); },
     setGameOver: function () {
-        document.querySelector("#message").innerHTML = "Game Over";
-        console.log("setGameOver called", this);
-        this.store.gameOver = true;
+        var _this = this;
+        // set the dead class on the snake body parts
+        this.store.snake.body.forEach(function (bodyPart) {
+            var selector = ".tile-class[data-x=\"".concat(bodyPart.x, "\"][data-y=\"").concat(bodyPart.y, "\"]");
+            var tile = _this.store.grid.querySelector(selector);
+            console.log("gameover, tile is", tile, selector);
+            if (tile)
+                tile.children[0].classList.add('dead');
+        }, document.querySelector("#message").innerHTML = "Game Over", console.log("setGameOver called", this), this.store.gameOver = true);
         // save high score to local storage if it is greater than the current high score
         var highScore = localStorage.getItem("highScore");
         if (highScore) {
@@ -246,8 +254,11 @@ exports.api = {
         this.store.gameOver = false;
         document.querySelector("#score").innerHTML = "Score: ".concat(this.store.score);
         document.querySelector("#message").innerHTML = "Good luck!";
-        // this.start()
-        this.store.pause = true;
+        window.api.store.pause = true;
+        setTimeout(function () {
+            window.api.store.pause = false;
+            window.api.start();
+        }, 1500);
     },
     mainLoop: function () {
         // check if game is over
@@ -306,6 +317,7 @@ exports.api = {
     },
     setBoardSize: function (boardSize) {
         this.store.gridSize = boardSize;
+        this.store.score = 3;
         // remove all tiles from the grid
         var grid = document.getElementById('grid');
         while (grid.firstChild) {

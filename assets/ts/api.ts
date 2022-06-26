@@ -139,7 +139,8 @@ class Snake {
         }
         )
     }
-    public changeDirection(event) {
+    public changeDirection(event: Event | Object) {
+        if ('preventDefault' in event) event.preventDefault()
         const keyPress = event.keyCode
         console.log(window.api, window.api.store.snake.vy, event)
         const { KEYS } = window.api.constants
@@ -227,6 +228,14 @@ export const api: Api = {
     },
     start () { this.store.pause = false; this.mainLoop();},
     setGameOver () { 
+        // set the dead class on the snake body parts
+        this.store.snake.body.forEach((bodyPart: Coords) => {
+            const selector = `.tile-class[data-x="${bodyPart.x}"][data-y="${bodyPart.y}"]`
+            const tile = this.store.grid.querySelector(selector)
+            console.log(`gameover, tile is`, tile, selector)
+            if (tile)
+                tile.children[0].classList.add('dead')
+        }
         document.querySelector(`#message`).innerHTML = `Game Over`
         console.log(`setGameOver called`, this)
         this.store.gameOver = true;
@@ -254,8 +263,11 @@ export const api: Api = {
         this.store.gameOver = false
         document.querySelector(`#score`).innerHTML = `Score: ${this.store.score}`
         document.querySelector(`#message`).innerHTML = `Good luck!`
-        // this.start()
-        this.store.pause = true
+        window.api.store.pause = true
+        setTimeout(() => {
+            window.api.store.pause = false
+            window.api.start()
+        }, 1500)
     },
     mainLoop: () => {
         // check if game is over
@@ -313,6 +325,7 @@ export const api: Api = {
 
     setBoardSize (boardSize: BoardSizes): void {
         this.store.gridSize = boardSize
+        this.store.score = 3
         // remove all tiles from the grid
         const grid = document.getElementById('grid')
         while (grid.firstChild) {

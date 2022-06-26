@@ -1,3 +1,18 @@
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(172, 152, 164);
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+body::-webkit-scrollbar {
+  width: 1em;
+}
+
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
 body {
   background-color: rgb(39, 20, 31);
   color: #efefef;
@@ -21,7 +36,7 @@ body #grid_wrapper #message, body #grid_wrapper #score, body #grid_wrapper #high
   text-transform: uppercase;
   position: absolute;
   left: 15px;
-  background-color: rgba(255, 255, 255, 0.4666666667);
+  background-color: rgba(255, 255, 255, 0.2666666667);
   border-radius: 3px;
   padding: 2px 5px;
 }
@@ -29,10 +44,10 @@ body #grid_wrapper #message {
   top: 3px;
 }
 body #grid_wrapper #score {
-  top: 22px;
+  top: 23px;
 }
 body #grid_wrapper #highscore {
-  top: 37px;
+  top: 43px;
 }
 body #grid.grid-class {
   display: flex;
@@ -46,12 +61,13 @@ body #grid.grid-class {
   height: 70vh !important;
 }
 body .snake-class {
+  transition: background-color 250ms ease-in-out;
   background-color: #28c641;
   width: 90%;
   height: 90%;
 }
 body .snake-class.dead {
-  background-color: #c7f0d8;
+  background-color: #c63a28;
 }
 body .food {
   background-color: rgb(172, 152, 164);
@@ -62,7 +78,11 @@ body .food {
 body #gui .button-grid {
   display: flex;
   justify-content: center;
-  margin-top: 25px;
+  width: 70vh;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
 }
 body #gui .button-grid button.button.big:hover {
   background: rgb(172, 152, 164);
@@ -70,9 +90,9 @@ body #gui .button-grid button.button.big:hover {
 body #gui .button-grid button.button.big {
   z-index: 10;
   cursor: pointer;
-  --y: -5px;
   content: "";
   display: block;
+  min-width: 75px;
   width: 75px;
   height: 65px;
   font-weight: bold;
