@@ -72,5 +72,12 @@ export const gui = {
         dir_grid.append(this.createButton(`right`, `big button`, () => { api.changeDirection('RIGHT') }))
         dir_grid.append(this.createButton(`up`, `big button`, () => { api.changeDirection('UP') }))
         dir_grid.append(this.createButton(`down`, `big button`, () => { api.changeDirection('DOWN') }))
+
+        const credit = document.createElement('a')
+        credit.href = `https://jhaubrich.com`
+        credit.innerText = `Snake by Justin Haubrich, 2022`
+        credit.target = `_blank`
+        credit.classList.add(`credit`)
+        gui.append(credit)
     }
 }
