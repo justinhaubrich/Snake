@@ -95,8 +95,14 @@ class Snake {
             if (api.store.score > 30) document.querySelector(`#message`).innerHTML = `You are amazing!`
             if (api.store.score > 35) document.querySelector(`#message`).innerHTML = `Unbelievable!`
             if (api.store.score > 40) document.querySelector(`#message`).innerHTML = `Ridiculous!`
+            if (api.store.score > 41) document.querySelector(`#message`).innerHTML = `How do you do this?!`
+            if (api.store.score > 42) document.querySelector(`#message`).innerHTML = `I am really impressed..`
+            if (api.store.score > 43) document.querySelector(`#message`).innerHTML = `don't let me distract you..`
             if (api.store.score > 45) document.querySelector(`#message`).innerHTML = `You are probably cheating!`
-            if (api.store.score > 50) document.querySelector(`#message`).innerHTML = `You are definitely cheating!`
+            if (api.store.score > 50) document.querySelector(`#message`).innerHTML = `I've been too easy on you!`
+            if (api.store.score > 60) document.querySelector(`#message`).innerHTML = `You are definitely cheating!`
+            if (api.store.score > 61) document.querySelector(`#message`).innerHTML = `Just kidding, you've got skill!`
+            if (api.store.score > 100) document.querySelector(`#message`).innerHTML = `Congrats, you are a legend!`
             document.getElementById(`score`).innerHTML = `Score: ${api.store.score}`
             // remove old food element from tile generate a new food
             api.store.food.remove()
