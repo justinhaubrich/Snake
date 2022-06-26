@@ -100,6 +100,13 @@ class Snake {
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
             api.beep(api)
             api.store.score += 1
+            if (api.store.score > 20) document.querySelector(`#message`).innerHTML = `You're getting good at this!`
+            if (api.store.score > 25) document.querySelector(`#message`).innerHTML = `You are a snake boss!`
+            if (api.store.score > 30) document.querySelector(`#message`).innerHTML = `You are amazing!`
+            if (api.store.score > 35) document.querySelector(`#message`).innerHTML = `Unbelievable!`
+            if (api.store.score > 40) document.querySelector(`#message`).innerHTML = `Ridiculous!`
+            if (api.store.score > 45) document.querySelector(`#message`).innerHTML = `You are probably cheating!`
+            if (api.store.score > 50) document.querySelector(`#message`).innerHTML = `You are definitely cheating!`
             document.getElementById(`score`).innerHTML = `Score: ${api.store.score}`
             // remove old food element from tile generate a new food
             api.store.food.remove()
@@ -228,7 +235,7 @@ export const api: Api = {
             food
         }
     },
-    start () { if (!this.store.pause) return; this.store.pause = false; this.mainLoop(); },
+    start () { if (!this.store.pause) return; this.store.pause = false; this.mainLoop(); document.querySelector(`#message`).innerText = `Go!` },
     setGameOver () { 
         // set the dead class on the snake body parts
         this.store.snake.body.forEach((bodyPart: Coords) => {
