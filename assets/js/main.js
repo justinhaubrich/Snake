@@ -20,5 +20,6 @@ function logInfo() {
         "background-color: white",
         "color: black",
     ].join(" ;");
-    console.log("%cWelcome to Snake %cTo access, the api, just type `api` in the console. Try `api.start()` to start the game.", blackBackground, whiteBackground);
+    console.log("%cWelcome to Snake %cTo access, the api, just type `api` in the console.", blackBackground, whiteBackground);
+    console.log("%cTry `api.start()` to start the game. Type `api.getBoardState()` to get the current board state.", whiteBackground);
 }

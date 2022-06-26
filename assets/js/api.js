@@ -6,8 +6,11 @@ var Food = /** @class */ (function () {
     function Food(api) {
         this.body = { x: 0, y: 0 };
         // generate a random location for the food
-        this.body.x = Math.floor(Math.random() * api.store.gridSize);
-        this.body.y = Math.floor(Math.random() * api.store.gridSize);
+        // get a random empty tile from the empty array returned from api.getBoardState()
+        var empty = api.getBoardState().empty;
+        var random = Math.floor(Math.random() * empty.length);
+        this.body.x = empty[random].x;
+        this.body.y = empty[random].y;
         this.draw();
     }
     Food.prototype.draw = function () {
@@ -228,8 +231,17 @@ exports.api = {
             food: food
         };
     },
-    start: function () { if (!this.store.pause)
-        return; this.store.pause = false; this.mainLoop(); document.querySelector("#message").innerText = "Go!"; },
+    start: function () {
+        if (this.store.gameOver) {
+            console.log("it is gameover, so restart");
+            return this.restart();
+        }
+        if (!this.store.pause)
+            return;
+        this.store.pause = false;
+        this.mainLoop();
+        document.querySelector("#message").innerText = "Go!";
+    },
     setGameOver: function () {
         var _this = this;
         // set the dead class on the snake body parts

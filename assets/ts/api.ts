@@ -4,8 +4,11 @@ import { Coords, Store, Difficulties, BoardSizes } from './types';
 class Food {
     constructor(api) { 
         // generate a random location for the food
-        this.body.x = Math.floor(Math.random() * api.store.gridSize)
-        this.body.y = Math.floor(Math.random() * api.store.gridSize)
+        // get a random empty tile from the empty array returned from api.getBoardState()
+        const empty = api.getBoardState().empty
+        const random = Math.floor(Math.random() * empty.length)
+        this.body.x = empty[random].x
+        this.body.y = empty[random].y
         this.draw()
     }
     public element: HTMLElement;
@@ -221,7 +224,13 @@ export const api: Api = {
             food
         }
     },
-    start () { if (!this.store.pause) return; this.store.pause = false; this.mainLoop(); document.querySelector(`#message`).innerText = `Go!` },
+    start () {
+        if (this.store.gameOver) { console.log(`it is gameover, so restart`); return this.restart() }
+        if (!this.store.pause) return
+        this.store.pause = false
+        this.mainLoop()
+        document.querySelector(`#message`).innerText = `Go!`
+    },
     setGameOver () { 
         // set the dead class on the snake body parts
         this.store.snake.body.forEach((bodyPart: Coords) => {

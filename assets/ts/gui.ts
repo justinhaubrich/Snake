@@ -22,16 +22,10 @@ export const gui = {
         const start= document.createElement('button')
         start.classList.add(`big`)
         start.classList.add(`button`)
+        start.classList.add(`start`)
         start.innerText = `Start`
         start.onclick = () => { api.start() }
         button_grid.append(start)
-
-        const restart= document.createElement('button')
-        restart.classList.add(`big`)
-        restart.classList.add(`button`)
-        restart.innerText = `Restart`
-        restart.onclick = () => { api.restart() }
-        button_grid.append(restart)
 
         const pause= document.createElement('button')
         pause.classList.add(`big`)
@@ -39,6 +33,13 @@ export const gui = {
         pause.innerText = `Pause`
         pause.onclick = () => { api.pause() }
         button_grid.append(pause)
+
+        const restart= document.createElement('button')
+        restart.classList.add(`big`)
+        restart.classList.add(`button`)
+        restart.innerText = `Restart`
+        restart.onclick = () => { api.restart() }
+        button_grid.append(restart)
 
         const large = document.createElement('button')
         large.classList.add(`big`)
@@ -68,15 +69,19 @@ export const gui = {
 
 
         dir_grid.append(this.createButton(`left`, `big button`, () => { api.changeDirection('LEFT') }))
+        // put up and down in their on flex grid
+        const updown = document.createElement('div')
+        updown.classList.add(`updown-buttons`)
+        dir_grid.append(updown)
+        updown.append(this.createButton(`up`, `big button`, () => { api.changeDirection('UP') }))
+        updown.append(this.createButton(`down`, `big button`, () => { api.changeDirection('DOWN') }))
         dir_grid.append(this.createButton(`right`, `big button`, () => { api.changeDirection('RIGHT') }))
-        dir_grid.append(this.createButton(`up`, `big button`, () => { api.changeDirection('UP') }))
-        dir_grid.append(this.createButton(`down`, `big button`, () => { api.changeDirection('DOWN') }))
 
         const credit = document.createElement('a')
         credit.href = `https://jhaubrich.com`
         credit.innerText = `Snake by Justin Haubrich, 2022`
         credit.target = `_blank`
         credit.classList.add(`credit`)
-        gui.append(credit)
+        document.body.append(credit)
     }
 }

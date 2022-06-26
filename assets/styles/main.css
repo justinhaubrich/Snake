@@ -9,6 +9,16 @@ body::-webkit-scrollbar {
   width: 1em;
 }
 
+.credit {
+  text-align: center;
+  color: #fff;
+  font-size: 9pt;
+  text-decoration: none;
+  margin: auto;
+  display: block;
+  margin-bottom: 15px;
+}
+
 body::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
@@ -95,14 +105,16 @@ body .food {
   border-radius: 50%;
   border: 2px solid #4d4d4d;
 }
-body #gui .credit {
-  text-align: center;
-  color: #fff;
-  font-size: 9pt;
-  text-decoration: none;
+body #gui {
+  display: flex;
+  width: 95vw;
+  max-width: 500px;
   margin: auto;
-  display: block;
-  margin-bottom: 15px;
+}
+@media (max-width: 500px) {
+  body #gui {
+    flex-direction: column;
+  }
 }
 body #gui .button-grid.direction {
   margin-bottom: 15px;
@@ -115,7 +127,7 @@ body #gui .button-grid.direction button.button.big {
 body #gui .button-grid {
   display: flex;
   justify-content: center;
-  width: 70vh;
+  width: 250px;
   margin: 0 auto;
   margin-top: 5px;
   flex-wrap: wrap;
@@ -149,6 +161,9 @@ body #gui .button-grid button.button.big {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2666666667);
   border-radius: 48% 52% 50% 50%/40% 40% 60% 60%;
   transform: translateY(var(--y, 0)) rotate(var(--rotation, 0));
+}
+body #gui .button-grid button.button.big.start {
+  background: #28c641;
 }
 @media (max-width: 500px) {
   body #gui .button-grid button.button.big {

@@ -24,8 +24,9 @@ function logInfo() {
     ].join(" ;");
 
     console.log(
-    "%cWelcome to Snake %cTo access, the api, just type `api` in the console. Try `api.start()` to start the game.",
+    "%cWelcome to Snake %cTo access, the api, just type `api` in the console.",
     blackBackground,
     whiteBackground
     )
+    console.log("%cTry `api.start()` to start the game. Type `api.getBoardState()` to get the current board state.", whiteBackground)
 }
