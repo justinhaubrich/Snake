@@ -6,7 +6,6 @@ class Food {
         // generate a random location for the food
         this.body.x = Math.floor(Math.random() * api.store.gridSize)
         this.body.y = Math.floor(Math.random() * api.store.gridSize)
-        console.log(`Food Instantiated at ${this.body.x}, ${this.body.y}`)
         this.draw()
     }
     public element: HTMLElement;
@@ -27,7 +26,6 @@ class Food {
         }) //.appendChild(food)
     }
     public remove() {
-        console.log('removing food')
         if (this?.tile?.children?.[0]?.remove)
             this.tile.children[0].remove()
     }
@@ -45,34 +43,27 @@ class Snake {
         // initialize snake body in middle of grid
         const tiles: NodeListOf<Element> = api.store.grid.querySelectorAll(`.tile-class`)
         const gridSize: number = Math.sqrt(tiles.length)
-        console.log(`instantiating snake`, api.store.grid, gridSize, tiles)
         const middleTile: number = Math.floor(gridSize / 2)
-        console.log(`middleTile`, middleTile)
         this.body = [{ x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 1 }]
         this.draw(api)
     }
 
     public remove(api) {
         // remove the snake from the grid
-        console.log(`remove snake`)
         this.body.forEach((bodyPart: Coords) => {
             const selector: string = `.tile-class[data-x="${bodyPart.x}"][data-y="${bodyPart.y}"]`
             const tile: HTMLElement = api.store.grid.querySelector(selector)
-            console.log(`removing bodyPart`, bodyPart, tile, selector)
             if (tile)
                 Array.from(tile.children).forEach(el => el.remove())
         })
     }
 
     public draw(api: Api) {
-        console.log(`drawing snake`)
         this.body.forEach((bodyPart: Coords) => {
             const body: HTMLElement = document.createElement('div')
             body.classList.add('snake-class')
-            console.log(`drawing snake part`, bodyPart, body)
             // render the snake body part on the grid in the correct tile
             const selector: string = `.tile-class[data-x="${bodyPart.x}"][data-y="${bodyPart.y}"]`
-            console.log(`selector`, selector, api.store.grid)
             const tile: HTMLElement = api.store.grid.querySelector(selector)
             tile.appendChild(body)
 
@@ -92,7 +83,6 @@ class Snake {
         api.store.grid.querySelector(selector).appendChild(bodyPart)
         } catch (e) {
             // user tried to go out of bounds
-            console.log(`collision with wall`)
             api.setGameOver(api)
             api.mainLoop()
         }
@@ -115,7 +105,6 @@ class Snake {
         } else {
             // remove the tail from the tile grid
             const tile = api.store.grid.querySelector(`.tile-class[data-x="${this.body[this.body.length - 1].x}"][data-y="${this.body[this.body.length - 1].y}"]`)
-            console.log(tile)
             tile.children[0].remove()
             // pop the tail
             this.body.pop()
@@ -124,15 +113,12 @@ class Snake {
         this.checkCollision(api)
     }
     public checkCollision(api: Api) {
-        console.log(`checking collision`)
         // check if the snake has hit the wall or itself
         const head: Coords = this.body[0]
-        console.log(`api is`, api, head)
         const tiles: NodeListOf<Element> = api.store.grid.querySelectorAll(`.tile-class`)
         const gridSize: number = Math.sqrt(tiles.length)
         // check if the snake has hit the wall
         if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
-            console.log(`collision with wall`)
             api.setGameOver(api)
             api.mainLoop()
         }
@@ -140,7 +126,6 @@ class Snake {
         this.body.forEach((bodyPart: Coords, index: number) => {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
-                    console.log(`collision with self`)
                     api.setGameOver(api)
                     api.mainLoop(api)
                 }
@@ -151,7 +136,6 @@ class Snake {
     public changeDirection(event: Event | Object) {
         if ('preventDefault' in event) event.preventDefault()
         const keyPress = event.keyCode
-        console.log(window.api, window.api.store.snake.vy, event)
         const { KEYS } = window.api.constants
         // determine current direction
         const snake = window.api.store.snake
@@ -166,7 +150,6 @@ class Snake {
         // prevent the snake from changing direction twice in a row
         if (!snake.changingDirection) {
             snake.changingDirection = true
-            console.log(`keypress is ${keyPress}, goingUp is ${goingUp}, goingDown is ${goingDown}, goingLeft is ${goingLeft}, goingRight is ${goingRight}`)
             if (keyPress == KEYS.DOWN && !goingUp) {
                 snake.vx = 0
                 snake.vy = 1
@@ -192,14 +175,11 @@ export const api: Api = {
     initGame: (grid: HTMLElement, constants: Object, store: Store, gui: any) => {
         if (gui) gui.setup(this.api)
         this.api.constants = constants
-        console.log(`initiating`, this, store)
         this?.api?.store = store
         this?.api?.store?.grid = grid
         this?.api?.setupGrid(grid)
-        console.log(this.api.store)
         this?.api?.store.snake = new Snake(api)
         this?.api?.store.food = new Food(api)
-        console.log(this.api)
         document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
         // get high score from local storage
         const highScore = localStorage.getItem(`highScore`)
@@ -241,12 +221,10 @@ export const api: Api = {
         this.store.snake.body.forEach((bodyPart: Coords) => {
             const selector = `.tile-class[data-x="${bodyPart.x}"][data-y="${bodyPart.y}"]`
             const tile = this.store.grid.querySelector(selector)
-            console.log(`gameover, tile is`, tile, selector)
             if (tile)
                 tile.children[0].classList.add('dead')
         }
         document.querySelector(`#message`).innerHTML = `Game Over`
-        console.log(`setGameOver called`, this)
         this.store.gameOver = true;
         // save high score to local storage if it is greater than the current high score
         const highScore = localStorage.getItem(`highScore`)
@@ -283,7 +261,6 @@ export const api: Api = {
     }
     mainLoop: () => {
         // check if game is over
-        console.log(`main loop`)
         this.api.store.snake.changingDirection = false
         if (this.api.store.pause) return
         // if score > 20 then increase speed
@@ -301,13 +278,11 @@ export const api: Api = {
         }
     },
     setupGrid: (grid: HTMLElement) => {
-        console.log(`setting up grid`)
         const gridSize = this.api.store.gridSize || this.api.constants[ this.api.constants.DEFAULT_GRID_SIZE]
         this.api.store.gridSize = gridSize
         const { TILE_SIZE } = this.api.constants
         const tileSize = TILE_SIZE || 100
         this.api.store.tileSize = tileSize
-        console.log(`gridSize: `, gridSize, TILE_SIZE)
         // style the grid
         grid.style.backgroundColor = this.api.constants.BACKGROUND_COLOR
         grid.style.height = `${gridSize * tileSize}px`

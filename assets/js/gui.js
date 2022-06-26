@@ -11,7 +11,6 @@ exports.gui = {
     },
     setup: function (api) {
         // TODO: refactor for DRY
-        console.log("setting up gui");
         var gui = document.querySelector('#gui');
         var dir_grid = document.createElement('div');
         dir_grid.classList.add("button-grid");

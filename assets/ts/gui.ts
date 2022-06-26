@@ -8,7 +8,6 @@ export const gui = {
     }
     setup(api) {
         // TODO: refactor for DRY
-        console.log(`setting up gui`)
         const gui = document.querySelector('#gui')
 
         const dir_grid = document.createElement('div')

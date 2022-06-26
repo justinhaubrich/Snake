@@ -8,7 +8,6 @@ var Food = /** @class */ (function () {
         // generate a random location for the food
         this.body.x = Math.floor(Math.random() * api.store.gridSize);
         this.body.y = Math.floor(Math.random() * api.store.gridSize);
-        console.log("Food Instantiated at ".concat(this.body.x, ", ").concat(this.body.y));
         this.draw();
     }
     Food.prototype.draw = function () {
@@ -28,7 +27,6 @@ var Food = /** @class */ (function () {
     };
     Food.prototype.remove = function () {
         var _a, _b, _c;
-        console.log('removing food');
         if ((_c = (_b = (_a = this === null || this === void 0 ? void 0 : this.tile) === null || _a === void 0 ? void 0 : _a.children) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.remove)
             this.tile.children[0].remove();
     };
@@ -43,32 +41,25 @@ var Snake = /** @class */ (function () {
         // initialize snake body in middle of grid
         var tiles = api.store.grid.querySelectorAll(".tile-class");
         var gridSize = Math.sqrt(tiles.length);
-        console.log("instantiating snake", api.store.grid, gridSize, tiles);
         var middleTile = Math.floor(gridSize / 2);
-        console.log("middleTile", middleTile);
         this.body = [{ x: middleTile, y: gridSize - 3 }, { x: middleTile, y: gridSize - 2 }, { x: middleTile, y: gridSize - 1 }];
         this.draw(api);
     }
     Snake.prototype.remove = function (api) {
         // remove the snake from the grid
-        console.log("remove snake");
         this.body.forEach(function (bodyPart) {
             var selector = ".tile-class[data-x=\"".concat(bodyPart.x, "\"][data-y=\"").concat(bodyPart.y, "\"]");
             var tile = api.store.grid.querySelector(selector);
-            console.log("removing bodyPart", bodyPart, tile, selector);
             if (tile)
                 Array.from(tile.children).forEach(function (el) { return el.remove(); });
         });
     };
     Snake.prototype.draw = function (api) {
-        console.log("drawing snake");
         this.body.forEach(function (bodyPart) {
             var body = document.createElement('div');
             body.classList.add('snake-class');
-            console.log("drawing snake part", bodyPart, body);
             // render the snake body part on the grid in the correct tile
             var selector = ".tile-class[data-x=\"".concat(bodyPart.x, "\"][data-y=\"").concat(bodyPart.y, "\"]");
-            console.log("selector", selector, api.store.grid);
             var tile = api.store.grid.querySelector(selector);
             tile.appendChild(body);
         });
@@ -88,7 +79,6 @@ var Snake = /** @class */ (function () {
         }
         catch (e) {
             // user tried to go out of bounds
-            console.log("collision with wall");
             api.setGameOver(api);
             api.mainLoop();
         }
@@ -118,7 +108,6 @@ var Snake = /** @class */ (function () {
         else {
             // remove the tail from the tile grid
             var tile = api.store.grid.querySelector(".tile-class[data-x=\"".concat(this.body[this.body.length - 1].x, "\"][data-y=\"").concat(this.body[this.body.length - 1].y, "\"]"));
-            console.log(tile);
             tile.children[0].remove();
             // pop the tail
             this.body.pop();
@@ -127,15 +116,12 @@ var Snake = /** @class */ (function () {
         this.checkCollision(api);
     };
     Snake.prototype.checkCollision = function (api) {
-        console.log("checking collision");
         // check if the snake has hit the wall or itself
         var head = this.body[0];
-        console.log("api is", api, head);
         var tiles = api.store.grid.querySelectorAll(".tile-class");
         var gridSize = Math.sqrt(tiles.length);
         // check if the snake has hit the wall
         if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
-            console.log("collision with wall");
             api.setGameOver(api);
             api.mainLoop();
         }
@@ -143,7 +129,6 @@ var Snake = /** @class */ (function () {
         this.body.forEach(function (bodyPart, index) {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
-                    console.log("collision with self");
                     api.setGameOver(api);
                     api.mainLoop(api);
                 }
@@ -154,7 +139,6 @@ var Snake = /** @class */ (function () {
         if ('preventDefault' in event)
             event.preventDefault();
         var keyPress = event.keyCode;
-        console.log(window.api, window.api.store.snake.vy, event);
         var KEYS = window.api.constants.KEYS;
         // determine current direction
         var snake = window.api.store.snake;
@@ -167,7 +151,6 @@ var Snake = /** @class */ (function () {
         // prevent the snake from changing direction twice in a row
         if (!snake.changingDirection) {
             snake.changingDirection = true;
-            console.log("keypress is ".concat(keyPress, ", goingUp is ").concat(goingUp, ", goingDown is ").concat(goingDown, ", goingLeft is ").concat(goingLeft, ", goingRight is ").concat(goingRight));
             if (keyPress == KEYS.DOWN && !goingUp) {
                 snake.vx = 0;
                 snake.vy = 1;
@@ -194,14 +177,11 @@ exports.api = {
         if (gui)
             gui.setup(_this.api);
         _this.api.constants = constants;
-        console.log("initiating", _this, store);
         (_a = _this === null || _this === void 0 ? void 0 : _this.api) === null || _a === void 0 ? void 0 : _a.store = store;
         (_c = (_b = _this === null || _this === void 0 ? void 0 : _this.api) === null || _b === void 0 ? void 0 : _b.store) === null || _c === void 0 ? void 0 : _c.grid = grid;
         (_d = _this === null || _this === void 0 ? void 0 : _this.api) === null || _d === void 0 ? void 0 : _d.setupGrid(grid);
-        console.log(_this.api.store);
         (_e = _this === null || _this === void 0 ? void 0 : _this.api) === null || _e === void 0 ? void 0 : _e.store.snake = new Snake(exports.api);
         (_f = _this === null || _this === void 0 ? void 0 : _this.api) === null || _f === void 0 ? void 0 : _f.store.food = new Food(exports.api);
-        console.log(_this.api);
         document.addEventListener("keydown", _this.api.store.snake.changeDirection);
         // get high score from local storage
         var highScore = localStorage.getItem("highScore");
@@ -244,10 +224,9 @@ exports.api = {
         this.store.snake.body.forEach(function (bodyPart) {
             var selector = ".tile-class[data-x=\"".concat(bodyPart.x, "\"][data-y=\"").concat(bodyPart.y, "\"]");
             var tile = _this.store.grid.querySelector(selector);
-            console.log("gameover, tile is", tile, selector);
             if (tile)
                 tile.children[0].classList.add('dead');
-        }, document.querySelector("#message").innerHTML = "Game Over", console.log("setGameOver called", this), this.store.gameOver = true);
+        }, document.querySelector("#message").innerHTML = "Game Over", this.store.gameOver = true);
         // save high score to local storage if it is greater than the current high score
         var highScore = localStorage.getItem("highScore");
         if (highScore) {
@@ -283,7 +262,6 @@ exports.api = {
     },
     mainLoop: function () {
         // check if game is over
-        console.log("main loop");
         _this.api.store.snake.changingDirection = false;
         if (_this.api.store.pause)
             return;
@@ -303,13 +281,11 @@ exports.api = {
         }
     },
     setupGrid: function (grid) {
-        console.log("setting up grid");
         var gridSize = _this.api.store.gridSize || _this.api.constants[_this.api.constants.DEFAULT_GRID_SIZE];
         _this.api.store.gridSize = gridSize;
         var TILE_SIZE = _this.api.constants.TILE_SIZE;
         var tileSize = TILE_SIZE || 100;
         _this.api.store.tileSize = tileSize;
-        console.log("gridSize: ", gridSize, TILE_SIZE);
         // style the grid
         grid.style.backgroundColor = _this.api.constants.BACKGROUND_COLOR;
         grid.style.height = "".concat(gridSize * tileSize, "px");
