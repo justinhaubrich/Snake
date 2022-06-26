@@ -70,10 +70,11 @@ body .snake-class.dead {
   background-color: #c63a28;
 }
 body .food {
-  background-color: rgb(172, 152, 164);
+  background-color: #4d4d4d;
   width: 75%;
   height: 75%;
   border-radius: 50%;
+  border: 2px solid #4d4d4d;
 }
 body #gui .button-grid {
   display: flex;
