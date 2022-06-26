@@ -7,4 +7,25 @@ import '../styles/main.css'
 Object.defineProperty(window, 'api', { value: api, writable: true })
 let grid: HTMLElement = document.getElementById('grid')
 
+logInfo()
 api.initGame(grid, constants, store, gui)
+
+function logInfo() {
+    let blackBackground = [
+    "font-size: 50px",
+    "background-color: black",
+    "color: white",
+    ].join(" ;");
+
+    let whiteBackground = [
+    "font-size: 20px",
+    "background-color: white",
+    "color: black",
+    ].join(" ;");
+
+    console.log(
+    "%cWelcome to Snake %cTo access, the api, just type `api` in the console. Try `api.start()` to start the game.",
+    blackBackground,
+    whiteBackground
+    )
+}
