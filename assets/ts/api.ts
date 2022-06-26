@@ -28,7 +28,8 @@ class Food {
     }
     public remove() {
         console.log('removing food')
-        this.tile.children[0].remove()
+        if (this?.tile?.children?.[0]?.remove)
+            this.tile.children[0].remove()
     }
 }
 
@@ -97,6 +98,7 @@ class Snake {
         }
         // check if the snake has eaten food
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
+            api.beep(api)
             api.store.score += 1
             document.getElementById(`score`).innerHTML = `Score: ${api.store.score}`
             // remove old food element from tile generate a new food
@@ -226,7 +228,7 @@ export const api: Api = {
             food
         }
     },
-    start () { this.store.pause = false; this.mainLoop();},
+    start () { if (!this.store.pause) return; this.store.pause = false; this.mainLoop(); },
     setGameOver () { 
         // set the dead class on the snake body parts
         this.store.snake.body.forEach((bodyPart: Coords) => {
@@ -265,10 +267,13 @@ export const api: Api = {
         document.querySelector(`#message`).innerHTML = `Good luck!`
         window.api.store.pause = true
         setTimeout(() => {
-            window.api.store.pause = false
             window.api.start()
         }, 1500)
     },
+    beep(api) {
+        const snd = new Audio(api.constants.BEEP);  
+        snd.play();
+    }
     mainLoop: () => {
         // check if game is over
         console.log(`main loop`)

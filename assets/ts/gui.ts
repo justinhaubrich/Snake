@@ -44,21 +44,21 @@ export const gui = {
         const large = document.createElement('button')
         large.classList.add(`big`)
         large.classList.add(`button`)
-        large.innerText = `Small`
+        large.innerText = `Tiny`
         large.onclick = () => { api.setBoardSize(21) }
         button_grid.append(large)
 
         const medium = document.createElement('button')
         medium.classList.add(`big`)
         medium.classList.add(`button`)
-        medium.innerText = `Medium`
+        medium.innerText = `Small`
         medium.onclick = () => { api.setBoardSize(15) }
         button_grid.append(medium)
 
         const small = document.createElement('button')
         small.classList.add(`big`)
         small.classList.add(`button`)
-        small.innerText = `Big`
+        small.innerText = `Huge`
         small.onclick = () => { api.setBoardSize(7) }
         button_grid.append(small)
 

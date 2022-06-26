@@ -27,8 +27,10 @@ var Food = /** @class */ (function () {
         }); //.appendChild(food)
     };
     Food.prototype.remove = function () {
+        var _a, _b, _c;
         console.log('removing food');
-        this.tile.children[0].remove();
+        if ((_c = (_b = (_a = this === null || this === void 0 ? void 0 : this.tile) === null || _a === void 0 ? void 0 : _a.children) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.remove)
+            this.tile.children[0].remove();
     };
     return Food;
 }());
@@ -92,6 +94,7 @@ var Snake = /** @class */ (function () {
         }
         // check if the snake has eaten food
         if (head.x == api.store.food.body.x && head.y == api.store.food.body.y) {
+            api.beep(api);
             api.store.score += 1;
             document.getElementById("score").innerHTML = "Score: ".concat(api.store.score);
             // remove old food element from tile generate a new food
@@ -219,7 +222,8 @@ exports.api = {
             food: food
         };
     },
-    start: function () { this.store.pause = false; this.mainLoop(); },
+    start: function () { if (!this.store.pause)
+        return; this.store.pause = false; this.mainLoop(); },
     setGameOver: function () {
         var _this = this;
         // set the dead class on the snake body parts
@@ -256,9 +260,12 @@ exports.api = {
         document.querySelector("#message").innerHTML = "Good luck!";
         window.api.store.pause = true;
         setTimeout(function () {
-            window.api.store.pause = false;
             window.api.start();
         }, 1500);
+    },
+    beep: function (api) {
+        var snd = new Audio(api.constants.BEEP);
+        snd.play();
     },
     mainLoop: function () {
         // check if game is over
