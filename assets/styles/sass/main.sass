@@ -80,6 +80,12 @@ body
         border-radius: 50%
         border: 2px solid #4d4d4d
     #gui
+        .button-grid.direction
+            margin-bottom: 5px
+            button.button.big
+                width: 75px
+                height: 65px
+                font-size: 12pt
         .button-grid
             @media (max-width: 500px)
                 width: 70vw
@@ -87,19 +93,24 @@ body
             justify-content: center
             width: 70vh
             margin: 0 auto
-            margin-top: 10px
-            margin-bottom: 25px
+            margin-top: 5px
+            &:not(.direction)
+                margin-bottom: 20px
             flex-wrap: wrap
             button.button.big:hover
                 background: $mid-color
             button.button.big
+                font-size: 9pt
                 z-index: 10
                 cursor: pointer
                 content: ""
                 display: block
                 min-width: 75px
-                width: 75px
-                height: 65px
+                width: 65px
+                height: 55px
+                @media (max-width: 500px)
+                    width: 30px
+                    height: 45px
                 font-weight: bold
                 text-transform: uppercase
                 background: #dedee0
