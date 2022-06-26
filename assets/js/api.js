@@ -170,8 +170,10 @@ var Snake = /** @class */ (function () {
     return Snake;
 }());
 exports.api = {
-    initGame: function (grid, constants, store) {
+    initGame: function (grid, constants, store, gui) {
         var _a, _b, _c, _d, _e, _f;
+        if (gui)
+            gui.setup(_this.api);
         _this.api.constants = constants;
         console.log("initiating", _this, store);
         (_a = _this === null || _this === void 0 ? void 0 : _this.api) === null || _a === void 0 ? void 0 : _a.store = store;
@@ -186,6 +188,7 @@ exports.api = {
         var highScore = localStorage.getItem("highScore");
         if (highScore) {
             document.getElementById("highscore").innerHTML = "High Score: ".concat(highScore);
+            _this.api.store.highScore = highScore;
         }
     },
     getBoardState: function () {
@@ -243,7 +246,8 @@ exports.api = {
         this.store.gameOver = false;
         document.querySelector("#score").innerHTML = "Score: ".concat(this.store.score);
         document.querySelector("#message").innerHTML = "Good luck!";
-        this.start();
+        // this.start()
+        this.store.pause = true;
     },
     mainLoop: function () {
         // check if game is over
@@ -251,6 +255,9 @@ exports.api = {
         _this.api.store.snake.changingDirection = false;
         if (_this.api.store.pause)
             return;
+        // if score > 20 then increase speed
+        if (_this.api.store.score > 20)
+            _this.api.setDifficulty("hard");
         if (!_this.api.store.gameOver) {
             setTimeout(function () {
                 _this.api.store.snake.move(_this.api);
@@ -305,7 +312,7 @@ exports.api = {
             grid.removeChild(grid.firstChild);
         }
         // set up the grid
-        this.initGame(grid, this.constants, this.store);
+        this.initGame.call({ api: exports.api }, grid, this.constants, this.store);
     },
     constants: null,
     store: null

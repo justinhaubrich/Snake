@@ -24,6 +24,7 @@ export interface Store {
     gridSize: number;
     tileSize: number;
     interval: number;
+    highscore?: number;
     gameOver: Boolean;
     pause: Boolean;
 }

@@ -25,12 +25,15 @@ body
             text-transform: uppercase
             position: absolute
             left: 15px
+            background-color: #fff7
+            border-radius: 3px
+            padding: 2px 5px
         #message
-            top: 5px
+            top: 3px
         #score
-            top: 20px
+            top: 22px
         #highscore
-            top: 35px
+            top: 37px
     #grid.grid-class
         display: flex
         flex-wrap: wrap
@@ -53,3 +56,27 @@ body
         width: 75%
         height: 75%
         border-radius: 50%
+    #gui
+        .button-grid
+            display: flex
+            justify-content: center
+            margin-top: 25px
+            button.button.big:hover
+                background: $mid-color
+            button.button.big
+                z-index: 10
+                cursor: pointer
+                --y: -5px
+                content: ""
+                display: block
+                width: 75px
+                height: 65px
+                font-weight: bold
+                text-transform: uppercase
+                background: #dedee0
+                background-image: linear-gradient(#dedee0, #aaa)
+                border-radius: 50%
+                border: 2px solid #000c
+                box-shadow: 0 0 3px #0004
+                border-radius: 48% 52% 50% 50% / 40% 40% 60% 60%
+                transform: translateY(var(--y, 0)) rotate(var(--rotation, 0))

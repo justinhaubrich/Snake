@@ -2,9 +2,10 @@
 exports.__esModule = true;
 var constants_1 = require("./constants");
 var api_1 = require("./api");
+var gui_1 = require("./gui");
 var store_1 = require("./store");
 require("../styles/main.css");
 Object.defineProperty(window, 'api', { value: api_1.api, writable: true });
 var grid = document.getElementById('grid');
 console.log(constants_1.constants, 1, grid, api_1.api);
-api_1.api.initGame(grid, constants_1.constants, store_1.store);
+api_1.api.initGame(grid, constants_1.constants, store_1.store, gui_1.gui);

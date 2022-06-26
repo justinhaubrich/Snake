@@ -21,15 +21,18 @@ body #grid_wrapper #message, body #grid_wrapper #score, body #grid_wrapper #high
   text-transform: uppercase;
   position: absolute;
   left: 15px;
+  background-color: rgba(255, 255, 255, 0.4666666667);
+  border-radius: 3px;
+  padding: 2px 5px;
 }
 body #grid_wrapper #message {
-  top: 5px;
+  top: 3px;
 }
 body #grid_wrapper #score {
-  top: 20px;
+  top: 22px;
 }
 body #grid_wrapper #highscore {
-  top: 35px;
+  top: 37px;
 }
 body #grid.grid-class {
   display: flex;
@@ -55,6 +58,32 @@ body .food {
   width: 75%;
   height: 75%;
   border-radius: 50%;
+}
+body #gui .button-grid {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+body #gui .button-grid button.button.big:hover {
+  background: rgb(172, 152, 164);
+}
+body #gui .button-grid button.button.big {
+  z-index: 10;
+  cursor: pointer;
+  --y: -5px;
+  content: "";
+  display: block;
+  width: 75px;
+  height: 65px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: #dedee0;
+  background-image: linear-gradient(#dedee0, #aaa);
+  border-radius: 50%;
+  border: 2px solid rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.2666666667);
+  border-radius: 48% 52% 50% 50%/40% 40% 60% 60%;
+  transform: translateY(var(--y, 0)) rotate(var(--rotation, 0));
 }
 
 /*# sourceMappingURL=main.css.map */

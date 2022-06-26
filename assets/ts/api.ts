@@ -179,7 +179,8 @@ class Snake {
 }
 
 export const api: Api = {
-    initGame: (grid: HTMLElement, constants: Object, store: Store) => {
+    initGame: (grid: HTMLElement, constants: Object, store: Store, gui: any) => {
+        if (gui) gui.setup(this.api)
         this.api.constants = constants
         console.log(`initiating`, this, store)
         this?.api?.store = store
@@ -194,6 +195,7 @@ export const api: Api = {
         const highScore = localStorage.getItem(`highScore`)
         if (highScore) {
             document.getElementById(`highscore`).innerHTML = `High Score: ${highScore}`
+            this.api.store.highScore = highScore
         }
     },
     getBoardState: () => {
@@ -252,13 +254,17 @@ export const api: Api = {
         this.store.gameOver = false
         document.querySelector(`#score`).innerHTML = `Score: ${this.store.score}`
         document.querySelector(`#message`).innerHTML = `Good luck!`
-        this.start()
+        // this.start()
+        this.store.pause = true
     },
     mainLoop: () => {
         // check if game is over
         console.log(`main loop`)
         this.api.store.snake.changingDirection = false
         if (this.api.store.pause) return
+        // if score > 20 then increase speed
+        if (this.api.store.score > 20)
+            this.api.setDifficulty(`hard`)
         if (!this.api.store.gameOver) {
             setTimeout(() => {
                 this.api.store.snake.move(this.api)
@@ -313,7 +319,7 @@ export const api: Api = {
             grid.removeChild(grid.firstChild)
         }
         // set up the grid
-        this.initGame(grid, this.constants, this.store)
+        this.initGame.call({api},grid, this.constants, this.store)
 
     },
     constants: null,
