@@ -290,6 +290,8 @@ exports.api = {
         // if score > 20 then increase speed
         if (_this.api.store.score > 20)
             _this.api.setDifficulty("hard");
+        if (_this.api.store.score > 50)
+            _this.api.store.interval = 100;
         if (!_this.api.store.gameOver) {
             setTimeout(function () {
                 _this.api.store.snake.move(_this.api);
