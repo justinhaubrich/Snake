@@ -82,7 +82,7 @@ var Snake = /** @class */ (function () {
         }
         catch (e) {
             // user tried to go out of bounds
-            api.setGameOver(api);
+            api.setGameOver();
             api.mainLoop();
         }
         // check if the snake has eaten food
@@ -137,15 +137,15 @@ var Snake = /** @class */ (function () {
         var gridSize = Math.sqrt(tiles.length);
         // check if the snake has hit the wall
         if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
-            api.setGameOver(api);
+            api.setGameOver();
             api.mainLoop();
         }
         // check if the snake has hit itself
         this.body.forEach(function (bodyPart, index) {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
-                    api.setGameOver(api);
-                    api.mainLoop(api);
+                    api.setGameOver();
+                    api.mainLoop();
                 }
             }
         });
@@ -250,7 +250,9 @@ exports.api = {
             var tile = _this.store.grid.querySelector(selector);
             if (tile)
                 tile.children[0].classList.add('dead');
-        }, document.querySelector("#message").innerHTML = "Game Over", this.store.gameOver = true);
+        });
+        document.querySelector("#message").innerHTML = "Game Over";
+        this.store.gameOver = true;
         // save high score to local storage if it is greater than the current high score
         var highScore = localStorage.getItem("highScore");
         if (highScore) {
@@ -297,7 +299,7 @@ exports.api = {
         if (!_this.api.store.gameOver) {
             setTimeout(function () {
                 _this.api.store.snake.move(_this.api);
-                _this.api.mainLoop(_this.api);
+                _this.api.mainLoop();
             }, _this.api.store.interval);
         }
         else {

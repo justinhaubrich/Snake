@@ -1,5 +1,6 @@
 export interface Api {
-    initGame: (grid: HTMLElement, constants: Object, store: Object) => void;
+    initGame: (grid: HTMLElement, constants: Object, store: Object, gui: any) => void;
+    beep: (api: Api) => void;
     getBoardState: () => Object;
     mainLoop: () => void;
     setupGrid: (grid: HTMLElement) => void;
@@ -7,7 +8,10 @@ export interface Api {
     restart: () => void;
     pause: () => void;
     setGameOver: () => void;
-    constants: Object | null;
+    setDifficulty: (difficulty: Difficulties) => void;
+    changeDirection: (direction: Directions) => void;
+    setBoardSize: (boardSize: BoardSizes) => void;
+    constants: any | null;
     store: Store | null;
 }
 
@@ -41,4 +45,5 @@ export interface Snake {
 }
 
 export type Difficulties = 'easy' | 'medium' | 'hard';
+export type Directions = 'LEFT' | 'RIGHT' | 'UP' | 'DOWN';
 export type BoardSizes = 7 | 15 | 21;

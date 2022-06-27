@@ -1,5 +1,5 @@
 import { Api } from './types';
-import { Coords, Store, Difficulties, BoardSizes } from './types';
+import { Coords, Store, Difficulties, BoardSizes, Directions } from './types';
 
 class Food {
     constructor(api) { 
@@ -86,7 +86,7 @@ class Snake {
         api.store.grid.querySelector(selector).appendChild(bodyPart)
         } catch (e) {
             // user tried to go out of bounds
-            api.setGameOver(api)
+            api.setGameOver()
             api.mainLoop()
         }
         // check if the snake has eaten food
@@ -128,15 +128,15 @@ class Snake {
         const gridSize: number = Math.sqrt(tiles.length)
         // check if the snake has hit the wall
         if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
-            api.setGameOver(api)
+            api.setGameOver()
             api.mainLoop()
         }
         // check if the snake has hit itself
         this.body.forEach((bodyPart: Coords, index: number) => {
             if (index > 0) {
                 if (head.x == bodyPart.x && head.y == bodyPart.y) {
-                    api.setGameOver(api)
-                    api.mainLoop(api)
+                    api.setGameOver()
+                    api.mainLoop()
                 }
             }
         }
@@ -238,15 +238,15 @@ export const api: Api = {
             const tile = this.store.grid.querySelector(selector)
             if (tile)
                 tile.children[0].classList.add('dead')
-        }
+        })
         document.querySelector(`#message`).innerHTML = `Game Over`
-        this.store.gameOver = true;
+        this.store.gameOver = true
         // save high score to local storage if it is greater than the current high score
         const highScore = localStorage.getItem(`highScore`)
         if (highScore) {
             if (this.store.score > parseInt(highScore)) {
                 localStorage.setItem(`highScore`, this.store.score.toString())
-                document.querySelector(`#message`).innerHTML += `\nNew High Score! You are a boss!`)
+                document.querySelector(`#message`).innerHTML += `\nNew High Score! You are a boss!`
             }
         }
         // if no high score save it to local storage
@@ -273,7 +273,7 @@ export const api: Api = {
     beep(api) {
         const snd = new Audio(api.constants.BEEP);  
         snd.play();
-    }
+    },
     mainLoop: () => {
         // check if game is over
         this.api.store.snake.changingDirection = false
@@ -286,7 +286,7 @@ export const api: Api = {
         if (!this.api.store.gameOver) {
             setTimeout(() => {
                 this.api.store.snake.move(this.api)
-                this.api.mainLoop(this.api)
+                this.api.mainLoop()
             }, this.api.store.interval)
         } else {
             document.querySelector(`#message`).innerHTML = `Game Over`
@@ -324,7 +324,7 @@ export const api: Api = {
         this.store.interval = this.constants[`INTERVALS`][difficulty.toUpperCase()]
         document.querySelector(`#message`).innerHTML = `Difficulty: ${difficulty}`
     },
-    changeDirection(direction: `UP` | `DOWN` | `LEFT` | `RIGHT`) {
+    changeDirection(direction: Directions) {
         this.store.snake.changeDirection({keyCode: this.constants.KEYS[direction]})
     },
 
