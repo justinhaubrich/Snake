@@ -17,6 +17,8 @@ body::-webkit-scrollbar {
   margin: auto;
   display: block;
   margin-bottom: 15px;
+  text-transform: uppercase;
+  font-family: "Roboto", sans-serif;
 }
 
 body::-webkit-scrollbar-track {
@@ -73,6 +75,7 @@ body #grid_wrapper #highscore {
   top: 43px;
 }
 body #grid.grid-class {
+  background-image: -webkit-radial-gradient(center, ellipse cover, transparent 0%, transparent 60%, rgba(0, 0, 0, 0.25) 100%), -webkit-repeating-linear-gradient(top, transparent 0px, transparent 1px, rgba(0, 0, 0, 0.05) 4px);
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
