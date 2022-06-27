@@ -199,7 +199,7 @@ exports.api = {
         (_f = _this === null || _this === void 0 ? void 0 : _this.api) === null || _f === void 0 ? void 0 : _f.store.food = new Food(exports.api);
         document.addEventListener("keydown", _this.api.store.snake.changeDirection);
         // get high score from local storage
-        var highScore = _this.getHighScore(exports.api);
+        var highScore = _this.api.getHighScore(exports.api);
     },
     getHighScore: function (api) {
         // get high score from local storage

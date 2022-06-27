@@ -191,7 +191,7 @@ export const api: Api = {
         this?.api?.store.food = new Food(api)
         document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
         // get high score from local storage
-        const highScore = this.getHighScore(api)
+        const highScore = this.api.getHighScore(api)
     },
     getHighScore: (api: Api) => {
         // get high score from local storage
