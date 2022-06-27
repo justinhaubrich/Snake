@@ -5,7 +5,7 @@ export const gui = {
         button.className = className
         button.onclick = onClick
         return button
-    }
+    },
     setup(api) {
         // TODO: refactor for DRY
         const gui = document.querySelector('#gui')
