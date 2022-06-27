@@ -117,12 +117,13 @@ body #gui {
   }
 }
 body #gui .button-grid.direction {
+  align-items: center;
   margin-bottom: 15px;
 }
 body #gui .button-grid.direction button.button.big {
   width: 75px;
   height: 65px;
-  font-size: 12pt;
+  font-size: 20pt;
 }
 body #gui .button-grid {
   display: flex;

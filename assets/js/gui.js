@@ -59,14 +59,14 @@ exports.gui = {
         button_grid.append(this.createButton("Easy", "big button", function () { api.setDifficulty('easy'); }));
         button_grid.append(this.createButton("Medium", "big button", function () { api.setDifficulty('medium'); }));
         button_grid.append(this.createButton("Hard", "big button", function () { api.setDifficulty('hard'); }));
-        dir_grid.append(this.createButton("left", "big button", function () { api.changeDirection('LEFT'); }));
+        dir_grid.append(this.createButton("\u21E6", "big button", function () { api.changeDirection('LEFT'); }));
         // put up and down in their on flex grid
         var updown = document.createElement('div');
         updown.classList.add("updown-buttons");
         dir_grid.append(updown);
-        updown.append(this.createButton("up", "big button", function () { api.changeDirection('UP'); }));
-        updown.append(this.createButton("down", "big button", function () { api.changeDirection('DOWN'); }));
-        dir_grid.append(this.createButton("right", "big button", function () { api.changeDirection('RIGHT'); }));
+        updown.append(this.createButton("\u21E7", "big button", function () { api.changeDirection('UP'); }));
+        updown.append(this.createButton("\u21E9", "big button", function () { api.changeDirection('DOWN'); }));
+        dir_grid.append(this.createButton("\u21E8", "big button", function () { api.changeDirection('RIGHT'); }));
         var credit = document.createElement('a');
         credit.href = "https://jhaubrich.com";
         credit.innerText = "Snake by Justin Haubrich, 2022";

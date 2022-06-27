@@ -68,14 +68,14 @@ export const gui = {
 
 
 
-        dir_grid.append(this.createButton(`left`, `big button`, () => { api.changeDirection('LEFT') }))
+        dir_grid.append(this.createButton(`\u21E6`, `big button`, () => { api.changeDirection('LEFT') }))
         // put up and down in their on flex grid
         const updown = document.createElement('div')
         updown.classList.add(`updown-buttons`)
         dir_grid.append(updown)
-        updown.append(this.createButton(`up`, `big button`, () => { api.changeDirection('UP') }))
-        updown.append(this.createButton(`down`, `big button`, () => { api.changeDirection('DOWN') }))
-        dir_grid.append(this.createButton(`right`, `big button`, () => { api.changeDirection('RIGHT') }))
+        updown.append(this.createButton(`\u21E7`, `big button`, () => { api.changeDirection('UP') }))
+        updown.append(this.createButton(`\u21E9`, `big button`, () => { api.changeDirection('DOWN') }))
+        dir_grid.append(this.createButton(`\u21E8`, `big button`, () => { api.changeDirection('RIGHT') }))
 
         const credit = document.createElement('a')
         credit.href = `https://jhaubrich.com`
