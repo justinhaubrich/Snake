@@ -26,6 +26,7 @@ body
     $light-green: #c7f0d8
     $dark-green: #43523d
     $bright-green: #28c641
+    $yellow: #fffcb1
     $red: #c63a28
     background-color: $dark-color
     color: #efefef
@@ -119,8 +120,14 @@ body
             button.button.big:hover
                 background: $mid-color
             button.button.big
+                &.start, &.restart
+                    color: white
                 &.start
                     background: $bright-green
+                &.restart
+                    background: $red
+                &.pause
+                    background: $yellow
                 font-size: 9pt
                 z-index: 10
                 cursor: pointer

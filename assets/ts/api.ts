@@ -254,7 +254,7 @@ export const api: Api = {
             localStorage.setItem(`highScore`, this.store.score.toString())
         }
     },
-    pause () { this.store.pause = true },
+    pause () { this.store.pause = true; document.querySelector(`#message`).innerText = `Paused` },
     restart () {
         this.setGameOver.bind(this)
         this.store.score = 3 
@@ -322,6 +322,7 @@ export const api: Api = {
     setDifficulty (difficulty: Difficulties): void {
         this.store.difficulty = difficulty
         this.store.interval = this.constants[`INTERVALS`][difficulty.toUpperCase()]
+        document.querySelector(`#message`).innerHTML = `Difficulty: ${difficulty}`
     },
     changeDirection(direction: `UP` | `DOWN` | `LEFT` | `RIGHT`) {
         this.store.snake.changeDirection({keyCode: this.constants.KEYS[direction]})

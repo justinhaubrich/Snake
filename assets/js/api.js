@@ -264,7 +264,7 @@ exports.api = {
             localStorage.setItem("highScore", this.store.score.toString());
         }
     },
-    pause: function () { this.store.pause = true; },
+    pause: function () { this.store.pause = true; document.querySelector("#message").innerText = "Paused"; },
     restart: function () {
         this.setGameOver.bind(this);
         this.store.score = 3;
@@ -334,6 +334,7 @@ exports.api = {
     setDifficulty: function (difficulty) {
         this.store.difficulty = difficulty;
         this.store.interval = this.constants["INTERVALS"][difficulty.toUpperCase()];
+        document.querySelector("#message").innerHTML = "Difficulty: ".concat(difficulty);
     },
     changeDirection: function (direction) {
         this.store.snake.changeDirection({ keyCode: this.constants.KEYS[direction] });

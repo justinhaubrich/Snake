@@ -29,12 +29,14 @@ exports.gui = {
         var pause = document.createElement('button');
         pause.classList.add("big");
         pause.classList.add("button");
+        pause.classList.add("pause");
         pause.innerText = "Pause";
         pause.onclick = function () { api.pause(); };
         button_grid.append(pause);
         var restart = document.createElement('button');
         restart.classList.add("big");
         restart.classList.add("button");
+        restart.classList.add("restart");
         restart.innerText = "Restart";
         restart.onclick = function () { api.restart(); };
         button_grid.append(restart);

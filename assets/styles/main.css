@@ -168,8 +168,17 @@ body #gui .button-grid button.button.big {
   border-radius: 48% 52% 50% 50%/40% 40% 60% 60%;
   transform: translateY(var(--y, 0)) rotate(var(--rotation, 0));
 }
+body #gui .button-grid button.button.big.start, body #gui .button-grid button.button.big.restart {
+  color: white;
+}
 body #gui .button-grid button.button.big.start {
   background: #28c641;
+}
+body #gui .button-grid button.button.big.restart {
+  background: #c63a28;
+}
+body #gui .button-grid button.button.big.pause {
+  background: #fffcb1;
 }
 @media (max-width: 500px) {
   body #gui .button-grid button.button.big {

@@ -30,6 +30,7 @@ export const gui = {
         const pause= document.createElement('button')
         pause.classList.add(`big`)
         pause.classList.add(`button`)
+        pause.classList.add(`pause`)
         pause.innerText = `Pause`
         pause.onclick = () => { api.pause() }
         button_grid.append(pause)
@@ -37,6 +38,7 @@ export const gui = {
         const restart= document.createElement('button')
         restart.classList.add(`big`)
         restart.classList.add(`button`)
+        restart.classList.add(`restart`)
         restart.innerText = `Restart`
         restart.onclick = () => { api.restart() }
         button_grid.append(restart)
