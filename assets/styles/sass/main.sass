@@ -62,7 +62,7 @@ body
         #highscore
             top: 43px
     #grid.grid-class
-        background-image: -webkit-radial-gradient( center,ellipse cover,transparent 0%,transparent 60%,rgba(0,0,0,0.25) 100% ),-webkit-repeating-linear-gradient( top,transparent 0px,transparent 1px,rgba(0,0,0,0.05) 4px )
+        background-image: -webkit-radial-gradient( center,ellipse cover,transparent 0%,transparent 60%,rgba(0,0,0,0.2) 100% ),-webkit-repeating-linear-gradient( top,transparent 0px,transparent 1px,rgba(0,0,0,0.05) 4px )
         display: flex
         flex-wrap: wrap
         margin: 0 auto
@@ -76,12 +76,14 @@ body
             width: 90vw !important
             height: 90vw !important
     .snake-class
-        transition: background-color 250ms ease-in-out
+        transition: background-color 250ms ease-in-out, box-shadow 250ms ease-in-out
         background-color: $bright-green
         width: 90%
         height: 90%
+        box-shadow: 0 0 6px 3px #28c64125, /* middle magenta */ 0 0 24px 2px #62e87755
     .snake-class.dead
         background-color: $red
+        box-shadow: 0 0 3px 3px #c63a2825
 
     .food
         background-color: #4d4d4d

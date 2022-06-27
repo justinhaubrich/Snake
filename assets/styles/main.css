@@ -75,7 +75,7 @@ body #grid_wrapper #highscore {
   top: 43px;
 }
 body #grid.grid-class {
-  background-image: -webkit-radial-gradient(center, ellipse cover, transparent 0%, transparent 60%, rgba(0, 0, 0, 0.25) 100%), -webkit-repeating-linear-gradient(top, transparent 0px, transparent 1px, rgba(0, 0, 0, 0.05) 4px);
+  background-image: -webkit-radial-gradient(center, ellipse cover, transparent 0%, transparent 60%, rgba(0, 0, 0, 0.2) 100%), -webkit-repeating-linear-gradient(top, transparent 0px, transparent 1px, rgba(0, 0, 0, 0.05) 4px);
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
@@ -93,13 +93,15 @@ body #grid.grid-class {
   }
 }
 body .snake-class {
-  transition: background-color 250ms ease-in-out;
+  transition: background-color 250ms ease-in-out, box-shadow 250ms ease-in-out;
   background-color: #28c641;
   width: 90%;
   height: 90%;
+  box-shadow: 0 0 6px 3px rgba(40, 198, 65, 0.1450980392), 0 0 24px 2px rgba(98, 232, 119, 0.3333333333);
 }
 body .snake-class.dead {
   background-color: #c63a28;
+  box-shadow: 0 0 3px 3px rgba(198, 58, 40, 0.1450980392);
 }
 body .food {
   background-color: #4d4d4d;
