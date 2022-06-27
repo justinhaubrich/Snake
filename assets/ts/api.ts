@@ -191,10 +191,15 @@ export const api: Api = {
         this?.api?.store.food = new Food(api)
         document.addEventListener(`keydown`, this.api.store.snake.changeDirection)
         // get high score from local storage
+        const highScore = this.getHighScore(api)
+    },
+    getHighScore: (api: Api) => {
+        // get high score from local storage
         const highScore = localStorage.getItem(`highScore`)
         if (highScore) {
             document.getElementById(`highscore`).innerHTML = `High Score: ${highScore}`
-            this.api.store.highScore = highScore
+            api.store.highScore = parseInt(highScore)
+            return parseInt(highScore)
         }
     },
     getBoardState: () => {

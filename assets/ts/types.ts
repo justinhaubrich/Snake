@@ -1,6 +1,7 @@
 export interface Api {
     initGame: (grid: HTMLElement, constants: Object, store: Object, gui: any) => void;
     beep: (api: Api) => void;
+    getHighScore: (api: Api) => number | void;
     getBoardState: () => Object;
     mainLoop: () => void;
     setupGrid: (grid: HTMLElement) => void;
@@ -28,7 +29,7 @@ export interface Store {
     gridSize: number;
     tileSize: number;
     interval: number;
-    highscore?: number;
+    highScore?: number;
     gameOver: Boolean;
     pause: Boolean;
 }

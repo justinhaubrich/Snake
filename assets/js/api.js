@@ -199,10 +199,15 @@ exports.api = {
         (_f = _this === null || _this === void 0 ? void 0 : _this.api) === null || _f === void 0 ? void 0 : _f.store.food = new Food(exports.api);
         document.addEventListener("keydown", _this.api.store.snake.changeDirection);
         // get high score from local storage
+        var highScore = _this.getHighScore(exports.api);
+    },
+    getHighScore: function (api) {
+        // get high score from local storage
         var highScore = localStorage.getItem("highScore");
         if (highScore) {
             document.getElementById("highscore").innerHTML = "High Score: ".concat(highScore);
-            _this.api.store.highScore = highScore;
+            api.store.highScore = parseInt(highScore);
+            return parseInt(highScore);
         }
     },
     getBoardState: function () {
